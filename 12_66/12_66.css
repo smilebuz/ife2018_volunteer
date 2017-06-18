@@ -1,0 +1,287 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+/*header*/
+header {
+  height: 80px;
+  background-color: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+header >  #logo {
+  width: 50px;
+  height: 50px;
+  margin-right: 400px;
+  border-radius: 50%;
+}
+header > nav {
+  height: 100%;
+  line-height: 80px;
+  display: flex;
+}
+header > nav > span{
+  text-decoration: none;
+  color: #ffffff;
+  padding-right: 50px;
+  cursor: pointer;
+}
+header > nav > .select{
+  display: inline-flex;
+  flex-direction: column;
+  background-image: url("image/down.png");
+  background-repeat: no-repeat;
+  background-position: 85px 33px;
+}
+header > nav > .select:nth-child(2) {
+  background-position: 90px 33px;
+}
+header > nav > .select:last-child {
+  background-position: 70px 33px;
+}
+header > nav > .select > ul {
+  z-index: 1000;
+  list-style: none;
+}
+header > nav > .select:not(target):not(hover) > ul {
+  visibility: collapse;
+}
+header > nav > .select:hover > ul {
+  visibility: visible;
+}
+/*banner-lg*/
+.banner-lg {
+  display: flex;
+  background-color: #2d7079;
+}
+.banner-lg > .banner-right {
+  width: 50%;
+  height: 260px;
+  background-image: url("image/banner_lg.png");
+  background-repeat: no-repeat;
+}
+.banner-lg > .color-block {
+  width: 50%;
+  flex-grow: 1;
+  background-color: inherit;
+  padding-top: 50px;
+  background-image: url("image/banner_left_v.png");
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+.banner-lg > .color-block > span {
+  font-size: 32px;
+  line-height: 32px;
+  opacity: 0.5;
+  color: #ffffff;
+  display: block;
+  margin-left: 30%;
+}
+.banner-lg > .color-block > span:nth-child(2){
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+.banner-lg > .color-block > span:nth-child(3){
+  font-size: 44px;
+  line-height: 44px;
+  opacity: 1;
+}
+/*main*/
+main{
+  width: 960px;
+  margin: 20px auto;
+}
+/*one two three*/
+.row{
+  display: flex;
+  justify-content: space-between;
+}
+.item {
+  width: 310px;
+  height: 240px;
+  border: 1px solid #eeeeee;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: column;
+  padding: 20px;
+}
+.intro {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+}
+.intro > .titles {
+  display: flex;
+  flex-flow: column;
+}
+.intro > .titles > .title {
+  font-size: 48px;
+  font-family: "Microsoft Yahei";
+  line-height: 48px;
+}
+.intro > .titles > .subtitle {
+  font-size: 24px;
+  line-height: 24px;
+  margin-top: 15px;
+  color: #acacac;
+}
+.intro > img {
+  width: 80px;
+  height: 80px;
+}
+.detail {
+  flex: 1;
+  font-size: 16px;
+  line-height: 30px;
+  text-align: justify;
+}
+.detail .last-word {
+  margin-left: 5px;
+}
+/*主要部分banner*/
+.banner-md {
+  margin-top: 20px;
+  height: 170px;
+  font-size: 16px;
+  color: #ffffff;
+  display: flex;
+  align-items: flex-end;
+  padding: 5px 10px;
+  background-image: url("image/banner_md.png");
+  background-color: #666666;
+  background-size: 100% auto;
+}
+/*表格选择*/
+.table-select {
+  display: flex;
+  height: 60px;
+  margin-top: 30px;
+}
+.table-select-item {
+  font-size: 24px;
+  flex: 1;
+  text-align: center;
+  line-height: 60px;
+  cursor: pointer;
+}
+.table-select-item:hover {
+  border: 2px solid #c4c4c4;
+  border-bottom: none;
+}
+.table-select-item:not(hover) {
+  border: 2px solid #c4c4c4;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+/*表格*/
+.table {
+  width: 100%;
+  font-size: 14px;
+  border-collapse: collapse;
+}
+.table caption {
+  text-align: left;
+  padding: 50px 0 50px 15px;
+  border-bottom: 2px solid #aaaaaa;
+  font-weight: bold;
+}
+.table caption, .table thead, .table .td-1, .table #tr_price {
+  font-size: 18px;
+  font-weight: bold;
+}
+.table th, .table td {
+  height: 60px;
+  border-bottom: 2px solid #d6d6d6;
+}
+.table td {
+  text-align: center;
+  width: 240px;
+}
+.table #price_free {
+  color: #417505;
+}
+.table #price_personal {
+  color: #4a90e2;
+}
+.table #price_company {
+  color: #d20821;
+}
+.table .td-text{
+  width: 150px;
+  margin-left: 45px;
+}
+/*收集用户信息*/
+#info_collect {
+  display: flex;
+  height: 210px;
+  margin-top: 40px;
+}
+#info_collect .form-container {
+  flex: 1;
+  background: -webkit-linear-gradient(left,#6f839f,#ffffff);
+}
+#info_form {
+  margin-top: 40px;
+  margin-left: 80px;
+}
+#info_form .form-control {
+  -webkit-appearance: none;
+  width: 225px;
+  height: 35px;
+  border: 1px solid #999999;
+  display: block;
+  margin-bottom: 15px;
+  padding-left: 15px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #cccccc;
+}
+#info_form select {
+  background-image: url("image/down_filled.png");
+  background-repeat: no-repeat;
+  background-position: 190px;
+}
+#info_form #user_address {
+  box-sizing: border-box;
+  display: inline;
+}
+#info_form button {
+  width: 95px;
+  height: 35px;
+  box-sizing: content-box;
+  display: inline;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+  border-radius: 5px;
+  border: 1px solid #999999;
+  background: -webkit-linear-gradient(bottom,#5596e3,#ffffff);
+}
+/*footer*/
+footer {
+  margin: 65px 0 25px 0;
+  text-align: center;
+}
+/*响应式*/
+@media screen and (max-width: 960px) {
+  header {
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+  }
+  header #logo {
+    margin: 0;
+  }
+  header nav {
+    display: flex;
+    flex-direction: column;
+  }
+  header > nav > .select:not(target):not(hover) > ul {
+    display: none;
+  }
+  header > nav > .select:hover > ul {
+    display: block;
+  }
+}
