@@ -255,6 +255,17 @@ main{
 #info_form #user_address {
   box-sizing: border-box;
   display: inline;
+  color: #000000;
+}
+#info_form #user_address::-webkit-input-placeholder {
+  color: #cccccc;
+}
+#info_form #user_address::-moz-placeholder {
+  color: #cccccc;
+  opacity: 1;
+}
+#info_form #user_address::-ms-input-placeholder {
+  color: #cccccc;
 }
 #info_form button {
   width: 95px;
