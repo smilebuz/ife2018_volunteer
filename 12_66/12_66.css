@@ -138,8 +138,8 @@ main{
 .detail .last-word {
   margin-left: 5px;
 }
-/*主要部分banner*/
-.banner-md {
+/*轮播图*/
+.banner-carousel {
   margin-top: 20px;
   height: 170px;
   font-size: 16px;
@@ -149,11 +149,24 @@ main{
   padding: 5px 10px;
   background: #666666 url("image/banner_md.png") 100%;
 }
+.carousel-controls {
+  display: flex;
+  justify-content: center;
+}
+.carousel-controls > .carousel-control {
+  height: 3px;
+  width: 60px;
+  background-color: #eeeeee;
+  margin: 10px;
+}
+.carousel-controls > .carousel-selected {
+  background-color: #999999;
+}
 /*表格选择*/
 .table-select {
   display: flex;
   height: 60px;
-  margin-top: 30px;
+  margin-top: 5px;
 }
 .table-select-item {
   font-size: 24px;
