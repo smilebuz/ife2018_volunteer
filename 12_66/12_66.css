@@ -190,6 +190,9 @@ main{
   height: 60px;
   border-bottom: 2px solid #d6d6d6;
 }
+.table tr th:nth-child(2n+1),.table tr td:nth-child(2n+1){
+  background-color: #eeeeee;
+}
 .table td {
   text-align: center;
   width: 240px;
