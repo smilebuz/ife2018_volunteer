@@ -151,6 +151,10 @@ main {
 .module-body {
     margin-top: 30px;
     line-height: 1.8;
+    text-align: justify;
+}
+.module-body .last-word {
+    margin-left: 5px;
 }
 /*.carousel*/
 .carousel {
