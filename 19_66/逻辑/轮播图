@@ -1,12 +1,8 @@
-1. 左右移动：
-    改变三个图的位置 left
-    每个图有一个属性data-show 值类型为字符串 正在展示的图片的该属性值为"true" 其余图片为"false"
-    计时器到时间时，将当前data-show为"true"的图片左移，下一张图片右移并设置data-show为"true"
+1. 左移：
+    left到达-960px后立刻移动到最右侧
 
 2. 淡入淡出:
-    为每个轮播图子项设置opacity，第一项为1，其余为0 css中设置
-    按文档顺序淡入淡出:
+    根据data-show淡入淡出
 
 3. 停止轮播：
-    恢复成最初的css样式，第一个item opacity为1 其余为0 left为0
-    clearTimeout(fade1) clearTimeout(fade2) clearTimeout(move1)
+    移除行内样式 清除定时器 为carousel-control添加/移除类
