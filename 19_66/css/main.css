@@ -62,8 +62,12 @@ nav span:first-child {
     background: none;
 }
 nav span ul {
+    width: 100%;
     list-style: none;
     z-index: 9999;
+}
+nav span ul li {
+    line-height: 40px;
 }
 nav span:not(target):not(hover) ul {
     visibility: collapse;
@@ -72,6 +76,8 @@ nav span:not(target):not(hover) ul {
     nav span:not(target):not(hover) ul {
         display: none;
     }
+}
+nav span:hover {
 }
 nav span:hover ul {
     visibility: visible;
@@ -157,6 +163,14 @@ main {
     margin-left: 5px;
 }
 /*.carousel*/
+.menu-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 960px;
+    height: 180px;
+    background: transparent;
+}
 .carousel-menu {
     position: absolute;
     width: 100px;
