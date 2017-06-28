@@ -132,6 +132,7 @@ function carouselChange(changeType) {
 
         case "stop":
             stopCarousel();
+            resetCarousel();
             break;
 
         default:
@@ -332,13 +333,9 @@ function resetCarousel() {
     for (let i = 0; i < carouselItems.length; i++) {
         carouselItems[i].removeAttribute("style");
         carouselItems[i].removeAttribute("data-carousel-order");
-        if (carouselItems[i]===carouselContainer.firstElementChild) {
-            carouselItems[i].setAttribute("data-carousel-cur","true");
-        }
-        else {
-            carouselItems[i].setAttribute("data-carousel-cur","false");
-        }
+        carouselItems[i].setAttribute("data-carousel-cur","false");
     }
+    carouselItems[0].setAttribute("data-carousel-cur","true");
     for (let i = 0; i < carouselControls.length; i++) {
         if (carouselControls[i]===carouselControlContainer.firstElementChild) {
             addClass(carouselControls[i],"carousel-selected");
