@@ -157,6 +157,31 @@ main {
     margin-left: 5px;
 }
 /*.carousel*/
+.carousel-menu {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #ccc;
+    z-index: 9999;
+    list-style: none;
+    background-color: #fff;
+    color: #000;
+}
+.carousel-menu-items {
+    flex: 1;
+    vertical-align: middle;
+    padding-top: 8px;
+    cursor: default;
+    font-size: 12px;
+    line-height: 12px;
+    text-align: center;
+}
+.carousel-menu-items:hover {
+    background-color: #ccc;
+}
 .carousel {
     position: relative;
     width: 960px;

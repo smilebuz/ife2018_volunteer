@@ -74,17 +74,29 @@ var tables = {
         "tr4": ["Feature T4","Some Text T4","Some Text T4","Some Text T4"],
     }
 };
+
 var $ = function(el) {
     return document.querySelector(el);
 };
 var $$ = function(el) {
     return document.querySelectorAll(el);
 }
-//
+//计时器id
 var carouselMoveId1;
 var carouselMoveId2;
 var carouselFadeId1;
 var carouselFadeId2;
+//是否轮播
+var isCarousel = false;
+/**
+* 轮播图常量
+*
+* @const
+* @type {number} PICSIZE 图片尺寸
+* @type {number} FADE_SPEED 淡入淡出速率
+*/
+const PICSIZE = 960;
+const FADE_SPEED = 0.05;
 /**
 * 为在setTimeout中调用carouselChange函数创建的函数
 *
@@ -105,14 +117,16 @@ function carouselChange(changeType) {
     switch (changeType) {
 
         case "move":
-            console.log("秘笈：左右横移！");
             stopCarousel();
+            resetCarousel();
             carouselMovePrepare();
             carouselMove();
             break;
 
         case "fade":
             stopCarousel();
+            resetCarousel();
+            carouselFadePrepare();
             carouselFade();
             break;
 
@@ -129,9 +143,10 @@ function carouselChange(changeType) {
 * 轮播方式选择
 *
 */
-function carouselTypeSelect() {
-    var carouseltype = $("#carousel-type-select").value;
-    carouselChange(carouseltype);
+function selectCarouselType(event) {
+    var carouselType = event.target.getAttribute("data-carousel-type");
+    $(".carousel-menu").style.display = "none";
+    carouselChange(carouselType);
 }
 /**
 * 在轮播图准备进行移动切换前对DOM元素的属性进行初始化
@@ -141,11 +156,12 @@ function carouselMovePrepare() {
     var carouselContainer = $(".carousel");
     var carouselItems = $$(".carousel-item");
     carouselContainer.style.overflow = "hidden";
-    for (var i = 0; i < carouselItems.length; i++) {
-        carouselItems[i].style.left = i*960 + "px";
+    for (let i = 0; i < carouselItems.length; i++) {
+        carouselItems[i].style.left = i * PICSIZE + "px";
         carouselItems[i].style.opacity = "1";
         carouselItems[i].setAttribute("data-carousel-order",i + 1);
     }
+    isCarousel = true;
 }
 /*
 * 轮播图水平移动
@@ -154,9 +170,9 @@ function carouselMovePrepare() {
 function carouselMove() {
     var carouselContainer = $(".carousel");
     var carouselItems = $$(".carousel-item");
-    for (var i = 0; i < carouselItems.length; i++) {
+    for (let i = 0; i < carouselItems.length; i++) {
         var el = $("[data-carousel-order='"+(i + 1)+"']");
-        moveElement(el,parseInt(el.style.left) - 960);
+        moveElement(el,parseInt(el.style.left) - PICSIZE);
     }
 }
 /**
@@ -178,75 +194,103 @@ function _moveElement(el,final_x) {
 * @param {number} final_x 移动终点的x轴坐标
 */
 function moveElement(el,final_x) {
-    var carouselControlContainer = $(".carousel-controls");
-    var carouselControlCur = $(".carousel-selected");
-    var carouselControlNext;
-    if (carouselControlCur==carouselControlContainer.lastElementChild) {
-        carouselControlNext = carouselControlContainer.firstElementChild;
-    }
-    else {
-        carouselControlNext = carouselControlCur.nextElementSibling;
-    }
-    var target_order = parseInt(el.getAttribute("data-carousel-order")) - 1;
-    var cur_x = parseInt(el.style.left);
-    if (cur_x > final_x) {
-        cur_x -= 1;
-        el.style.left = cur_x+"px";
-        carouselMoveId1 = setTimeout(_moveElement(el,final_x),0);
-    }
-    else {
-        if (target_order===0) {
-            el.style.left = (el.parentElement.childElementCount-1)*960 + "px";
-            el.setAttribute("data-carousel-order",el.parentElement.childElementCount);
+    if (isCarousel) {
+        var carouselControlContainer = $(".carousel-controls");
+        var carouselControlCur = $(".carousel-selected");
+        var carouselItems = $$(".carousel-item");
+        var carouselControlNext;
+        if (carouselControlCur==carouselControlContainer.lastElementChild) {
+            carouselControlNext = carouselControlContainer.firstElementChild;
         }
         else {
-            el.setAttribute("data-carousel-order",target_order);
+            carouselControlNext = carouselControlCur.nextElementSibling;
         }
-        if (target_order===2) {
-            removeClass(carouselControlCur,"carousel-selected");
-            addClass(carouselControlNext,"carousel-selected");
-            carouselMoveId2 = setTimeout(carouselMove,500);
+        var target_order = parseInt(el.getAttribute("data-carousel-order")) - 1;
+        var cur_x = parseInt(el.style.left);
+        if (cur_x > final_x) {
+            cur_x -= 1;
+            el.style.left = cur_x+"px";
+            carouselMoveId1 = setTimeout(_moveElement(el,final_x),0);
         }
+        else {
+            if (target_order===0) {
+                el.style.left = (carouselItems.length - 1) * PICSIZE + "px";
+                el.setAttribute("data-carousel-order",carouselItems.length);
+            }
+            else {
+                el.setAttribute("data-carousel-order",target_order);
+            }
+            if (target_order===2) {
+                removeClass(carouselControlCur,"carousel-selected");
+                addClass(carouselControlNext,"carousel-selected");
+                carouselMoveId2 = setTimeout(carouselMove,500);
+            }
+        }
+    }
+    else {
+        resetCarousel();
     }
 }
 /**
-* 轮播项淡入淡出
+* 轮播图淡入淡出初始化
+*
+*/
+function carouselFadePrepare() {
+    isCarousel = true;
+}
+/**
+* 轮播图淡入淡出
 *
 */
 function carouselFade() {
-    var carouselContainer = $(".carousel");
-    var carouselCur= $("[data-carousel-cur=true]");
-    var carouselNext;
-    var carouselControlContainer = $(".carousel-controls");
-    var carouselControlCur = $(".carousel-selected");
-    var carouselControlNext;
-    if (carouselCur==carouselContainer.lastElementChild) {
-        carouselNext = carouselContainer.firstElementChild;
+    if (isCarousel) {
+        var carouselContainer = $(".carousel");
+        var carouselItems = $$(".carousel-item");
+        var carouselCur= $("[data-carousel-cur=true]");
+        var carouselNext;
+        var carouselControlContainer = $(".carousel-controls");
+        var carouselControlCur = $(".carousel-selected");
+        var carouselControlNext;
+        /*
+        if (carouselCur==carouselContainer.lastElementChild) {
+            carouselNext = carouselContainer.firstElementChild;
+        }
+        else {
+            carouselNext = carouselCur.nextElementSibling;
+        }
+        */
+        if (carouselCur==carouselItems[carouselItems.length-1]) {
+            carouselNext = carouselItems[0];
+        }
+        else {
+            carouselNext = carouselCur.nextElementSibling;
+        }
+
+        if (carouselControlCur==carouselControlContainer.lastElementChild) {
+            carouselControlNext = carouselControlContainer.firstElementChild;
+        }
+        else {
+            carouselControlNext = carouselControlCur.nextElementSibling;
+        }
+        var opacity1 = parseFloat(window.getComputedStyle(carouselCur).opacity);
+        var opacity2 = parseFloat(window.getComputedStyle(carouselNext).opacity);
+        if (opacity1 > 0) {
+            opacity1 -= FADE_SPEED;
+            opacity2 += FADE_SPEED;
+            carouselCur.style.opacity = opacity1;
+            carouselNext.style.opacity = opacity2;
+            carouselFadeId1 = setTimeout(carouselFade,50);
+        }
+        else {
+            carouselCur.setAttribute("data-carousel-cur","false");
+            carouselNext.setAttribute("data-carousel-cur","true");
+            removeClass(carouselControlCur,"carousel-selected");
+            addClass(carouselControlNext,"carousel-selected");
+            carouselFadeId2 = setTimeout(carouselFade,2000);
+        }
     }
     else {
-        carouselNext = carouselCur.nextElementSibling;
-    }
-    if (carouselControlCur==carouselControlContainer.lastElementChild) {
-        carouselControlNext = carouselControlContainer.firstElementChild;
-    }
-    else {
-        carouselControlNext = carouselControlCur.nextElementSibling;
-    }
-    var opacity1 = parseFloat(window.getComputedStyle(carouselCur).opacity);
-    var opacity2 = parseFloat(window.getComputedStyle(carouselNext).opacity);
-    if (opacity1 > 0) {
-        opacity1 -= 0.05;
-        opacity2 += 0.05;
-        carouselCur.style.opacity = opacity1;
-        carouselNext.style.opacity = opacity2;
-        carouselFadeId1 = setTimeout(carouselFade,50);
-    }
-    else {
-        carouselCur.setAttribute("data-carousel-cur","false");
-        carouselNext.setAttribute("data-carousel-cur","true");
-        removeClass(carouselControlCur,"carousel-selected");
-        addClass(carouselControlNext,"carousel-selected");
-        carouselFadeId2 = setTimeout(carouselFade,2000);
+        resetCarousel();
     }
 }
 /**
@@ -254,6 +298,13 @@ function carouselFade() {
 *
 */
 function stopCarousel() {
+    isCarousel = false;
+}
+/**
+* 重置轮播
+*
+*/
+function resetCarousel() {
     clearTimeoutIfExisted(carouselFadeId1);
     clearTimeoutIfExisted(carouselFadeId2);
     clearTimeoutIfExisted(carouselMoveId1);
@@ -296,7 +347,7 @@ function clearTimeoutIfExisted(timeoutId) {
 * 调用函数改变城市下拉框中的选项
 *
 */
-function countryValueChange() {
+function changeCountry() {
     var country = $("#country-select").value;
     refreshCitySelect(country);
 }
@@ -308,16 +359,16 @@ function countryValueChange() {
 function refreshCitySelect(country) {
     var citySelect = $("#city-select");
     var cur_cityElements = [];
-    for (var i = 0; i < citySelect.childNodes.length; i++) {
+    for (let i = 0; i < citySelect.childNodes.length; i++) {
         if (citySelect.childNodes[i].nodeType===1) {
             cur_cityElements.push(citySelect.childNodes[i]);
         }
     }
-    for (var i = 1; i < cur_cityElements.length; i++) {
+    for (let i = 1; i < cur_cityElements.length; i++) {
         citySelect.removeChild(cur_cityElements[i]);
     }
     var cities = geoObject[country];
-    for (var i = 0; i < cities.length; i++) {
+    for (let i = 0; i < cities.length; i++) {
         var option = document.createElement("option");
         option.setAttribute("value",cities[i].value);
         var text = document.createTextNode(cities[i].city);
@@ -335,11 +386,11 @@ function refreshTable(event) {
     var table = $("table");
     var tbody = $("tbody");
     var tabs = $$(".table-tabs > span");
-    for (var i = 0; i < cur_trs.length; i++) {
+    for (let i = 0; i < cur_trs.length; i++) {
         tbody.removeChild(cur_trs[i]);
     }
     //改变tab样式
-    for (var i = 0; i < tabs.length; i++) {
+    for (let i = 0; i < tabs.length; i++) {
         if (tabs[i]===event.target) {
             addClass(tabs[i],"tab-selected");
         }
@@ -352,7 +403,7 @@ function refreshTable(event) {
     for (var tr in content) {
         if (content.hasOwnProperty(tr)) {
             var newRow = document.createElement("tr");
-            for (var i = 0; i < content[tr].length; i++) {
+            for (let i = 0; i < content[tr].length; i++) {
                 var newCol = document.createElement("td");
                 var text = document.createTextNode(content[tr][i]);
                 newCol.appendChild(text);
@@ -361,6 +412,50 @@ function refreshTable(event) {
             tbody.appendChild(newRow);
         }
     }
+}
+/**
+* 为轮播图容器初始化右键菜单
+*
+*/
+function initContentMenu(event) {
+    event.cancelBubble = true;
+    event.returnValue = false;
+    var carouselContainer = $(".carousel");
+    var width = parseInt(window.getComputedStyle(carouselContainer).width);
+    var height = parseInt(window.getComputedStyle(carouselContainer).height);
+    var menu = $(".carousel-menu");
+    menu.style.display = "flex";
+    var menuLeft = event.layerX;
+    var menuTop = event.layerY;
+    /*
+    l = event.clientX;
+    t = event.clientY;
+    if( l >= (width - menu.offsetWidth) ) {
+        l  = width - menu.offsetWidth;
+    } else {
+        l = l
+    }
+    if(t > height - menu.offsetHeight  ) {
+        t = height - menu.offsetHeight;
+    } else {
+        t = t;
+    }
+    */
+    if (width - menuLeft < menu.offsetWidth) {
+        menuLeft = width - menu.offsetWidth;
+    }
+    else {
+        menuLeft = event.layerX;
+    }
+    if (height - menuTop < menu.offsetHeight) {
+        menuTop = height - menu.offsetHeight;
+    }
+    else {
+        menuTop = event.layerY;
+    }
+    menu.style.left = menuLeft + 'px';
+    menu.style.top = menuTop + 'px';
+    //return false;
 }
 //以下为工具类
 /**
@@ -400,12 +495,15 @@ function removeClass(el,delClassName) {
 *
 */
 function init() {
-    var carouselSelect = $("#carousel-type-select");
     var countrySelect = $("#country-select");
     var tableTabs = $(".table-tabs");
-    carouselSelect.addEventListener("change",carouselTypeSelect,false);
-    countrySelect.addEventListener("change",countryValueChange,false);
+    var carouselContainer = $(".carousel");
+    var carouselMenu = $(".carousel-menu");
+    countrySelect.addEventListener("change",changeCountry,false);
     tableTabs.addEventListener("click",refreshTable,false);
+    carouselContainer.addEventListener("contextmenu",initContentMenu,false);
+    carouselMenu.style.display = "none";
+    carouselMenu.addEventListener("click",selectCarouselType,false);
     //模拟点击
     $("[data-for=table1]").click();
 }

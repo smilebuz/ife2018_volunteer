@@ -85,14 +85,6 @@
                     </p>
                 </div>
             </div>
-            <div class="">
-                <select class="" id="carousel-type-select">
-                    <option value="" disabled selected>请选择轮播方式</option>
-                    <option value="move">左右移动</option>
-                    <option value="fade">淡入淡出</option>
-                    <option value="stop">停止轮播</option>
-                </select>
-            </div>
             <div class="carousel">
                 <div class="carousel-item" data-carousel-cur="true">
                     <img src="../image/carousel_1.png" alt="第一张轮播图" class="carousel-img">
@@ -106,6 +98,11 @@
                     <img src="../image/carousel_3.jpg" alt="第三张轮播图" class="carousel-img">
                     <p class="carousel-text">SOME TEXT3</p>
                 </div>
+                <ul class="carousel-menu">
+                    <li class="carousel-menu-items" data-carousel-type="move">左右移动</li>
+                    <li class="carousel-menu-items" data-carousel-type="fade">淡入淡出</li>
+                    <li class="carousel-menu-items" data-carousel-type="stop">停止轮播</li>
+                </ul>
             </div>
             <div class="carousel-controls">
                 <div class="carousel-control carousel-selected"></div>
