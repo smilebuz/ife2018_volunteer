@@ -374,6 +374,7 @@ function resetCarousel() {
     clearTimeoutIfExisted(carouselFadeId2);
     clearTimeoutIfExisted(carouselMoveId1);
     clearTimeoutIfExisted(carouselMoveId2);
+    /*
     var carouselContainer = $(".carousel");
     var carouselItems = $$(".carousel-item");
     var carouselControlContainer = $(".carousel-controls");
@@ -386,23 +387,6 @@ function resetCarousel() {
             break;
         default:
             break;
-    }
-    /*
-    for (let i = 0; i < carouselItems.length; i++) {
-        $("[data-carousel-order='"+(i+1)+"']").removeAttribute("style");
-        //carouselItems[i].removeAttribute("style");
-        //carouselItems[i].removeAttribute("data-carousel-order");
-        //carouselItems[i].setAttribute("data-carousel-cur","false");
-    }
-    //carouselItems[0].setAttribute("data-carousel-cur","true");
-
-    for (let i = 0; i < carouselControls.length; i++) {
-        if (carouselControls[i]===carouselControlContainer.firstElementChild) {
-            addClass(carouselControls[i],"carousel-selected");
-        }
-        else {
-            removeClass(carouselControls[i],"carousel-selected");
-        }
     }
     */
 }
@@ -422,7 +406,8 @@ function clearTimeoutIfExisted(timeoutId) {
 */
 function initCarouselMenu(event) {
     event.cancelBubble = true;
-    event.returnValue = false;
+    //event.returnValue = false;
+    event.preventDefault();
     var carouselContainer = $(".carousel");
     var width = parseInt(window.getComputedStyle(carouselContainer).width);
     var height = parseInt(window.getComputedStyle(carouselContainer).height);
