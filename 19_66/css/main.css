@@ -196,6 +196,9 @@ main {
 .carousel-menu-items:hover {
     background-color: #ccc;
 }
+.disabled {
+    cursor: not-allowed;
+}
 .carousel {
     position: relative;
     width: 960px;

@@ -8,4 +8,9 @@
     移除行内样式 清除定时器 为carousel-control添加/移除类
 
 4. 暂停/继续：
-    
+
+切换逻辑
+    移动->淡入淡出：根据data-carousel-order改变opacity 为1的opacity位1 其余为0；移除style属性
+    移动->停止：不能移除style属性
+    移动->重置：移除style属性 重置data-carousel-order属性
+    淡入淡出->移动：根据data-carousel-order设置style属性的left值；opacity值全为1 完成！

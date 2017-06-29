@@ -88,6 +88,10 @@ var carouselFadeId1;
 var carouselFadeId2;
 //是否轮播
 var isCarousel = false;
+var isMoving = false;
+var isFading = false;
+//轮播类型
+var carouselType;
 /**
 * 轮播图常量
 *
@@ -141,13 +145,33 @@ function carouselChange(changeType) {
     }
 }
 /**
-* 轮播方式选择
+* 轮播方式选择 事件代理
 *
 */
 function selectCarouselType(event) {
     var carouselType = event.target.getAttribute("data-carousel-type");
     $(".carousel-menu").style.display = "none";
-    carouselChange(carouselType);
+    if (isMoving||isFading) {
+        if (isMoving) {
+            if (carouselType==="move"||carouselType==="fade") {
+                return false;
+            }
+            else {
+                carouselChange(carouselType);
+            }
+        }
+        else {
+            if (carouselType==="fade") {
+                return false;
+            }
+            else {
+                carouselChange(carouselType);
+            }
+        }
+    }
+    else {
+        carouselChange(carouselType);
+    }
 }
 /**
 * 在轮播图准备进行移动切换前对DOM元素的属性进行初始化
@@ -158,9 +182,12 @@ function carouselMovePrepare() {
     var carouselItems = $$(".carousel-item");
     carouselContainer.style.overflow = "hidden";
     for (let i = 0; i < carouselItems.length; i++) {
-        carouselItems[i].style.left = i * PICSIZE + "px";
+        ///carouselItems[i].style.left = i * PICSIZE + "px";
         carouselItems[i].style.opacity = "1";
-        carouselItems[i].setAttribute("data-carousel-order",i + 1);
+        if (!$("[data-carousel-order = '" + (i + 1) + "']").style.left) {
+            $("[data-carousel-order = '" + (i + 1) + "']").style.left = i * PICSIZE + "px";
+        }
+        //carouselItems[i].setAttribute("data-carousel-order",i + 1);
     }
     isCarousel = true;
 }
@@ -173,7 +200,7 @@ function carouselMove() {
     var carouselItems = $$(".carousel-item");
     for (let i = 0; i < carouselItems.length; i++) {
         var el = $("[data-carousel-order='"+(i + 1)+"']");
-        moveElement(el,parseInt(el.style.left) - PICSIZE);
+        moveElement(el,Math.floor((parseFloat(el.style.left)-1)/PICSIZE)*PICSIZE);
     }
 }
 /**
@@ -196,6 +223,7 @@ function _moveElement(el,final_x) {
 */
 function moveElement(el,final_x) {
     if (isCarousel) {
+        isMoving = true;
         var carouselControlContainer = $(".carousel-controls");
         var carouselControlCur = $(".carousel-selected");
         var carouselItems = $$(".carousel-item");
@@ -224,11 +252,12 @@ function moveElement(el,final_x) {
             if (target_order===2) {
                 removeClass(carouselControlCur,"carousel-selected");
                 addClass(carouselControlNext,"carousel-selected");
-                carouselMoveId2 = setTimeout(carouselMove,500);
+                carouselMoveId2 = setTimeout(carouselMove,2000);
             }
         }
     }
     else {
+        isMoving = false;
         resetCarousel();
     }
 }
@@ -238,6 +267,18 @@ function moveElement(el,final_x) {
 */
 function carouselFadePrepare() {
     isCarousel = true;
+    var carouselItems = $$(".carousel-item");
+    var carouselCur= $("[data-carousel-order='1']");
+    for (var i = 0; i < carouselItems.length; i++) {
+        carouselItems[i].removeAttribute("style");
+        if (carouselItems[i]===carouselCur) {
+            carouselItems[i].style.opacity = "1";
+        }
+        else {
+            carouselItems[i].style.opacity = "0";
+        }
+    }
+
 }
 /**
 * 轮播图淡入淡出
@@ -245,21 +286,14 @@ function carouselFadePrepare() {
 */
 function carouselFade() {
     if (isCarousel) {
+        isFading = true;
         var carouselContainer = $(".carousel");
         var carouselItems = $$(".carousel-item");
-        var carouselCur= $("[data-carousel-cur=true]");
+        var carouselCur= $("[data-carousel-order='1']");
         var carouselNext;
         var carouselControlContainer = $(".carousel-controls");
         var carouselControlCur = $(".carousel-selected");
         var carouselControlNext;
-        /*
-        if (carouselCur==carouselContainer.lastElementChild) {
-            carouselNext = carouselContainer.firstElementChild;
-        }
-        else {
-            carouselNext = carouselCur.nextElementSibling;
-        }
-        */
         if (carouselCur==carouselItems[carouselItems.length-1]) {
             carouselNext = carouselItems[0];
         }
@@ -273,6 +307,7 @@ function carouselFade() {
         else {
             carouselControlNext = carouselControlCur.nextElementSibling;
         }
+
         var opacity1 = parseFloat(window.getComputedStyle(carouselCur).opacity);
         var opacity2 = parseFloat(window.getComputedStyle(carouselNext).opacity);
         if (opacity1 > 0) {
@@ -283,14 +318,20 @@ function carouselFade() {
             carouselFadeId1 = setTimeout(carouselFade,50);
         }
         else {
-            carouselCur.setAttribute("data-carousel-cur","false");
-            carouselNext.setAttribute("data-carousel-cur","true");
+            for (let i = 0; i < carouselItems.length; i++) {
+                var target_order = parseInt(carouselItems[i].getAttribute("data-carousel-order")) - 1;
+                if (target_order === 0) {
+                    target_order = carouselItems.length;
+                }
+                carouselItems[i].setAttribute("data-carousel-order",target_order);
+            }
             removeClass(carouselControlCur,"carousel-selected");
             addClass(carouselControlNext,"carousel-selected");
             carouselFadeId2 = setTimeout(carouselFade,2000);
         }
     }
     else {
+        isFading = false;
         resetCarousel();
     }
 }
@@ -300,8 +341,10 @@ function carouselFade() {
 */
 function pauseCarousel() {
     console.log("秘笈：暂停！");
-    //clearTimeoutIfExisted(carouselMoveId2);
-    //stopCarousel();
+    if (isCarousel) {
+        clearTimeoutIfExisted(carouselMoveId2);
+        stopCarousel();
+    }
 }
 /**
 * 继续轮播
@@ -309,6 +352,9 @@ function pauseCarousel() {
 */
 function continueCarousel() {
     console.log("秘笈：继续！");
+    if (!isCarousel) {
+        setTimeout(carouselMove,1000);
+    }
 }
 /**
 * 停止轮播
@@ -316,6 +362,8 @@ function continueCarousel() {
 */
 function stopCarousel() {
     isCarousel = false;
+    isMoving = false;
+    isFading = false;
 }
 /**
 * 重置轮播
@@ -330,12 +378,24 @@ function resetCarousel() {
     var carouselItems = $$(".carousel-item");
     var carouselControlContainer = $(".carousel-controls");
     var carouselControls = $$(".carousel-control");
-    for (let i = 0; i < carouselItems.length; i++) {
-        carouselItems[i].removeAttribute("style");
-        carouselItems[i].removeAttribute("data-carousel-order");
-        carouselItems[i].setAttribute("data-carousel-cur","false");
+    switch (carouselType) {
+        case "move":
+            break;
+        case "fade":
+
+            break;
+        default:
+            break;
     }
-    carouselItems[0].setAttribute("data-carousel-cur","true");
+    /*
+    for (let i = 0; i < carouselItems.length; i++) {
+        $("[data-carousel-order='"+(i+1)+"']").removeAttribute("style");
+        //carouselItems[i].removeAttribute("style");
+        //carouselItems[i].removeAttribute("data-carousel-order");
+        //carouselItems[i].setAttribute("data-carousel-cur","false");
+    }
+    //carouselItems[0].setAttribute("data-carousel-cur","true");
+
     for (let i = 0; i < carouselControls.length; i++) {
         if (carouselControls[i]===carouselControlContainer.firstElementChild) {
             addClass(carouselControls[i],"carousel-selected");
@@ -344,6 +404,7 @@ function resetCarousel() {
             removeClass(carouselControls[i],"carousel-selected");
         }
     }
+    */
 }
 /**
 * 清除计时器
@@ -359,7 +420,7 @@ function clearTimeoutIfExisted(timeoutId) {
 * 为轮播图容器初始化右键菜单
 *
 */
-function initContentMenu(event) {
+function initCarouselMenu(event) {
     event.cancelBubble = true;
     event.returnValue = false;
     var carouselContainer = $(".carousel");
@@ -369,20 +430,6 @@ function initContentMenu(event) {
     menu.style.display = "flex";
     var menuLeft = event.layerX;
     var menuTop = event.layerY;
-    /*
-    l = event.clientX;
-    t = event.clientY;
-    if( l >= (width - menu.offsetWidth) ) {
-        l  = width - menu.offsetWidth;
-    } else {
-        l = l
-    }
-    if(t > height - menu.offsetHeight  ) {
-        t = height - menu.offsetHeight;
-    } else {
-        t = t;
-    }
-    */
     if (width - menuLeft < menu.offsetWidth) {
         menuLeft = width - menu.offsetWidth;
     }
@@ -397,7 +444,32 @@ function initContentMenu(event) {
     }
     menu.style.left = menuLeft + 'px';
     menu.style.top = menuTop + 'px';
+    if (isMoving||isFading) {
+        if (isMoving) {
+            //isMoving为true
+            addClass($("[data-carousel-type=move]"),"disabled");
+            addClass($("[data-carousel-type=fade]"),"disabled");
+        }
+        else {
+            //isFading为true
+            addClass($("[data-carousel-type=fade]"),"disabled");
+        }
+    }
+    else {
+        removeClass($("[data-carousel-type=move]"),"disabled");
+        removeClass($("[data-carousel-type=fade]"),"disabled");
+    }
     //return false;
+}
+/**
+* 隐藏轮播图菜单
+*
+*/
+function hideCarouselMenu() {
+    var carouselMenu = $(".carousel-menu");
+    if (carouselMenu.style.display==="flex") {
+        carouselMenu.style.display = "none";
+    }
 }
 /**
 * 选择国家的下拉框内值发生变化时，根据选择的国家
@@ -514,11 +586,12 @@ function init() {
     var carouselMenu = $(".carousel-menu");
     countrySelect.addEventListener("change",changeCountry,false);
     tableTabs.addEventListener("click",refreshTable,false);
-    carouselContainer.addEventListener("contextmenu",initContentMenu,false);
-    carouselContainer.addEventListener("mouseenter",pauseCarousel,false);
-    carouselContainer.addEventListener("mouseleave",continueCarousel,false);
+    carouselContainer.addEventListener("contextmenu",initCarouselMenu,false);
+    //carouselContainer.addEventListener("mouseenter",pauseCarousel,false);
+    //carouselContainer.addEventListener("mouseleave",continueCarousel,false);
     carouselMenu.style.display = "none";
     carouselMenu.addEventListener("click",selectCarouselType,false);
+    document.addEventListener("click",hideCarouselMenu,false);
     //模拟点击
     $("[data-for=table1]").click();
 }
