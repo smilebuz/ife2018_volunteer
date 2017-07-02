@@ -54,7 +54,7 @@ const TABLECONTENTS = [
     ["Content Text", "Content Text Text", "123.432"]
 ];
 //
-var scroll = true;
+var isScroll = true;
 var navDefaultHeight; //{string}
 /**
  * 自定义选择器函数
@@ -125,7 +125,7 @@ function refreshTable() {
  * 初始化左侧导航栏高度
  *
  */
-function initLeftNav() {
+function initTableNav() {
     var navList = $("#left-nav ul");
     //先将navList高度设置为auto获取能够显示全部信息的默认高度
     navList.style.height = "auto";
@@ -141,16 +141,16 @@ function initLeftNav() {
  *
  */
 function scrollPage() {
-    if (scroll) {
+    if (isScroll) {
         setTimeout(scrollPage,100);
-        scroll = false;
+        isScroll = false;
     }
     else {
         var thead = $(".table thead");
         var rows = $$(".table tbody tr");
         var cols = rows[0].querySelectorAll("td");
         var headCols = $$("thead tr th");
-        var nav = $("#left-nav");
+        var tableNav = $("#left-nav");
         var navList = $("#left-nav ul");
         var scrollDistance = document.body.scrollTop;
         if (scrollDistance >= 360) {
@@ -163,8 +163,8 @@ function scrollPage() {
                 headCols[i].style.width = width;
             }
             //左侧导航栏样式
-            nav.style.position = "fixed";
-            nav.style.top = 0;
+            tableNav.style.position = "fixed";
+            tableNav.style.top = 0;
         }
         else {
             $(".table").removeAttribute("style");
@@ -172,7 +172,7 @@ function scrollPage() {
             for (let i = 0; i < headCols.length; i++) {
                 headCols[i].removeAttribute("style");
             }
-            nav.removeAttribute("style");
+            tableNav.removeAttribute("style");
         }
         //左侧导航栏高度
         var windowHeight = window.innerHeight;
@@ -181,7 +181,7 @@ function scrollPage() {
             listHeight = parseInt(navDefaultHeight);
         }
         navList.style.height = listHeight + "px";
-        scroll = true;
+        isScroll = true;
     }
 }
 /**
@@ -189,29 +189,33 @@ function scrollPage() {
  *
  */
 function showNavScrollBar() {
-    var leftNavList = $("#left-nav ul");
-    leftNavList.style.overflow = "scroll";
+    var navList = $("#left-nav ul");
+    var windowHeight = window.innerHeight;
+    var listHeight = windowHeight - navList.getBoundingClientRect().top;
+    if (listHeight < parseInt(navDefaultHeight)) {
+        navList.style.overflow = "scroll";
+    }
 }
 /**
  * 隐藏左侧导航栏滚动条
  *
  */
 function hideNavScrollBar() {
-    var leftNavList = $("#left-nav ul");
-    leftNavList.removeAttribute("style");
+    var navList = $("#left-nav ul");
+    navList.removeAttribute("style");
 }
 /**
  * 页面加载时需要进行的初始化操作
  *
  */
 function init() {
-    var leftNav = $("#left-nav");
+    var tableNav = $("#left-nav");
     refreshTableNavList();
     refreshTable();
-    initLeftNav();
+    initTableNav();
     document.addEventListener("scroll",scrollPage,false);
-    leftNav.addEventListener("mouseenter",showNavScrollBar,false);
-    leftNav.addEventListener("mouseleave",hideNavScrollBar,false);
+    tableNav.addEventListener("mouseenter",showNavScrollBar,false);
+    tableNav.addEventListener("mouseleave",hideNavScrollBar,false);
 }
 
 init();
