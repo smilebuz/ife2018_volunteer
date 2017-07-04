@@ -126,16 +126,27 @@ main {
 #left-nav {
     min-width: 200px;
 }
-#left-nav > ul {
+#main-menu {
     padding-top: 20px;
     padding-bottom: 10px;
-    padding-left: 20px;
+    border: 1px solid #efefef;
     font-size: 14px;
     list-style: none;
     background-color: #efefef;
 }
-#left-nav > ul > li {
+#main-menu > li {
     margin-bottom: 10px;
+    padding-left: 20px;
+    cursor: default;
+}
+#left-nav .sub-menu {
+    margin-left: -20px;
+    padding-left: 40px;
+    list-style: none;
+    background-color: #fff;
+}
+#left-nav .sub-menu li {
+    margin-bottom: 5px;
 }
 .table {
     flex: 1;

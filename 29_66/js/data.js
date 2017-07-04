@@ -4,33 +4,190 @@
  *
  */
 //模拟数据
-const NAVLISTITEMS = [
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text",
-    "Level 1 Some Text"
-];
+var navs = {
+    "menu": [
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        },
+        {
+            "main": "Level 1 Some Text",
+            "sub": [
+                "Level 2 Some Text",
+                "Level 2 Some Text",
+                "Level 2 Some Text"
+            ]
+        }
+    ]
+};
 const TABLECONTENTS = [
     ["Content Text", "Content Text Text", "123.432"],
     ["Content Text", "Content Text Text", "123.432"],
