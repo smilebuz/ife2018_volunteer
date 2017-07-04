@@ -157,14 +157,14 @@ function scrollPage() {
             //表格样式
             thead.style.position = "fixed";
             thead.style.top = 0;
-            $(".table").style.marginLeft = "220px";
+            //$(".table").style.marginLeft = "220px";
             for (let i = 0; i < cols.length; i++) {
                 let width = window.getComputedStyle(cols[i]).width;
                 headCols[i].style.width = width;
             }
             //左侧导航栏样式
-            tableNav.style.position = "fixed";
-            tableNav.style.top = 0;
+            //tableNav.style.position = "fixed";
+            //tableNav.style.top = 0;
         }
         else {
             $(".table").removeAttribute("style");
