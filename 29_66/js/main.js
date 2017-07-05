@@ -77,7 +77,7 @@ function refreshTableContent(tableContents) {
         let tdName = document.createElement("td");
         let tdContent = document.createElement("td");
         let tdValue = document.createElement("td");
-        let name = document.createTextNode(tableContents[i].name + " " + id);
+        let name = document.createTextNode(tableContents[i].name);
         let content = document.createTextNode(tableContents[i].content);
         let value = document.createTextNode(tableContents[i].value);
         tdName.appendChild(name);
