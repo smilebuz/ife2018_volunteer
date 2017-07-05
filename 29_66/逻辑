@@ -1,1 +1,5 @@
 每次点击一次菜单，在完成隐藏/显示二级菜单后 调用calcNavDefaultHeight动态改变navDefaultHeight 然后在为nav设定高度值
+
+弹窗：
+    覆盖层
+    弹窗层

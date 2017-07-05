@@ -94,6 +94,35 @@
                 </tbody>
             </table>
         </main>
+        <div class="modal-cover">
+
+        </div>
+        <div class="modal" id="edit-modal">
+            <form class="form">
+                <label>
+                    Name  <input type="text" name="" value="" id="input-name">
+                </label>
+                <label>
+                    Content  <input type="text" name="" value="" id="input-content">
+                </label>
+                <label>
+                    Value  <input type="text" name="" value="" id="input-value">
+                </label>
+                <div class="btn-group">
+                    <button type="button" class="button" id="confirm-edit">确定</button>
+                    <button type="button" class="button" id="cancel-edit">取消</button>
+                </div>
+            </form>
+        </div>
+        <div class="modal" id="delete-modal">
+            <form class="form" id="delete-form">
+                <span>确认删除<span id="del-row-id"></span></span>
+                <div class="btn-group">
+                    <button type="button" class="button" id="confirm-delete">确定</button>
+                    <button type="button" class="button" id="cancel-delete">取消</button>
+                </div>
+            </form>
+        </div>
         <!--引入js-->
         <script src="../js/data.js" charset="utf-8"></script>
         <script src="../js/main.js" charset="utf-8"></script>

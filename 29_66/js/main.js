@@ -18,13 +18,14 @@ var $$ = function(selector) {
     return document.querySelectorAll(selector);
 }
 /**
- * 模拟加载左侧导航栏数据
+ * 模拟加载数据
  *
  */
-function loadNavData() {
+function loadMockData() {
     var menus = navs.menu;
-    var curListItems = $$("#main-menu > li");
+    var tableContents = tableContent.data;
     refreshTableNavList(menus);
+    refreshTableContent(tableContents);
 }
 /**
  * 刷新左侧导航栏
@@ -57,8 +58,9 @@ function refreshTableNavList(menus) {
 /**
  * 刷新表格
  *
+ * @param {Array} tableContents 菜单数组
  */
-function refreshTable() {
+function refreshTableContent(tableContents) {
     var tbody = $(".table tbody");
     var curRows = $$(".table tbody tr");
     if (curRows.length) {
@@ -68,23 +70,33 @@ function refreshTable() {
             }
         }
     }
-    for (let i = 0; i < TABLECONTENTS.length; i++) {
+    for (let i = 0; i < tableContents.length; i++) {
         let row = document.createElement("tr");
-        for (let j = 0; j < TABLECONTENTS[i].length; j++) {
-            let col = document.createElement("td");
-            let text = document.createTextNode(TABLECONTENTS[i][j]);
-            col.appendChild(text);
-            row.appendChild(col);
-        }
-        let col = document.createElement("td");
-        for (var k = 0; k < 3; k++) {
-            let btn = document.createElement("button");
-            let text = document.createTextNode("BTN");
-            btn.appendChild(text);
-            col.appendChild(btn);
-            row.appendChild(col);
-        }
-        tbody.appendChild(row);
+        let id = tableContents[i].id;
+        row.setAttribute("data-tr-id",id);
+        let tdName = document.createElement("td");
+        let tdContent = document.createElement("td");
+        let tdValue = document.createElement("td");
+        let name = document.createTextNode(tableContents[i].name + " " + id);
+        let content = document.createTextNode(tableContents[i].content);
+        let value = document.createTextNode(tableContents[i].value);
+        tdName.appendChild(name);
+        tdContent.appendChild(content);
+        tdValue.appendChild(value);
+        let tdBtn = document.createElement("td");
+        let editBtn = document.createElement("button");
+        let delBtn = document.createElement("button");
+        editBtn.appendChild(document.createTextNode("编辑"));
+        delBtn.appendChild(document.createTextNode("删除"));
+        editBtn.setAttribute("data-button-type","edit");
+        delBtn.setAttribute("data-button-type","delete");
+        tdBtn.appendChild(editBtn);
+        tdBtn.appendChild(delBtn);
+        row.appendChild(tdName);
+        row.appendChild(tdContent);
+        row.appendChild(tdValue);
+        row.appendChild(tdBtn);
+        tbody.append(row);
     }
 }
 /**
@@ -213,6 +225,156 @@ function toggleSubMenu(event) {
     calcNavDefaultHeight();
     calcNavHeight();
 }
+/**
+ * 点击表格内按钮
+ *
+ */
+function clickTableBtn(event) {
+    var rowID = event.target.parentElement.parentElement.getAttribute("data-tr-id");
+    var buttonType = event.target.getAttribute("data-button-type");
+    switch (buttonType) {
+        case "edit":
+            showEditModal(rowID);
+            break;
+        case "delete":
+            showDeleteModal(rowID);
+            break;
+        default:
+            break;
+    }
+}
+/**
+ * 显示编辑弹窗
+ *
+ * @param {string} rowID 行ID
+ */
+function showEditModal(rowID) {
+    //停止滚动事件
+    document.body.style.overflowY = "hidden";
+    var name = event.target.parentElement.parentElement.firstElementChild.textContent;
+    var content = event.target.parentElement.parentElement.firstElementChild.nextElementSibling.textContent;
+    var value = event.target.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.textContent;
+    var modalHeight = parseInt(window.getComputedStyle($("#edit-modal")).height);
+    var modalWidth = parseInt(window.getComputedStyle($("#edit-modal")).width);
+    var docHeight = document.body.offsetHeight;
+    var windowHeight = window.innerHeight;
+    var windowWidth = window.innerWidth;
+    var modalLeft = (windowWidth - modalWidth)/2;
+    var modalTop = (windowHeight - modalHeight)/2;
+    var confirmEdit = $("#confirm-edit");
+    var cancelEdit = $("#cancel-edit");
+    //设置弹窗覆盖层
+    $(".modal-cover").style.display = "block";
+    $(".modal-cover").style.height = docHeight + "px";
+    //设置弹窗居中
+    $("#edit-modal").style.display = "block";
+    $("#edit-modal").style.top = modalTop + "px";
+    $("#edit-modal").style.left = modalLeft + "px";
+    //设置弹窗输入框内容
+    $("#input-name").value = name;
+    $("#input-content").value = content;
+    $("#input-value").value = value;
+    //按钮事件
+    confirmEdit.addEventListener("click",_completeOp(rowID,"edit"),false);
+    cancelEdit.addEventListener("click",_hideModal("edit"),false);
+    //confirmEdit.removeEventListener("click",completeEdit,false);
+    //cancelEdit.removeEventListener("click",hideModal,false);
+}
+/**
+ * 显示删除弹窗
+ *
+ * @param {string} rowID 行ID
+ */
+function showDeleteModal(rowID) {
+    document.body.style.overflowY = "hidden";
+    var name = event.target.parentElement.parentElement.firstElementChild.textContent;
+    var modalHeight = parseInt(window.getComputedStyle($("#delete-modal")).height);
+    var modalWidth = parseInt(window.getComputedStyle($("#delete-modal")).width);
+    var docHeight = document.body.offsetHeight;
+    var windowHeight = window.innerHeight;
+    var windowWidth = window.innerWidth;
+    var modalLeft = (windowWidth - modalWidth)/2;
+    var modalTop = (windowHeight - modalHeight)/2;
+    var confirmDelete = $("#confirm-delete");
+    var cancelDelete = $("#cancel-delete");
+    //设置弹窗覆盖层
+    $(".modal-cover").style.display = "block";
+    $(".modal-cover").style.height = docHeight + "px";
+    //设置弹窗居中
+    $("#delete-modal").style.display = "block";
+    $("#delete-modal").style.top = modalTop + "px";
+    $("#delete-modal").style.left = modalLeft + "px";
+    //设置弹窗输入框内容
+    $("#del-row-id").textContent = name + "吗?";
+    //按钮事件
+    confirmDelete.addEventListener("click",_completeOp(rowID,"delete"),false);
+    cancelDelete.addEventListener("click",_hideModal("delete"),false);
+}
+/**
+ * 确定修改
+ *
+ */
+function _completeOp(rowID,modalType) {
+    return function () {
+        completeOp(rowID,modalType);
+    }
+}
+function completeOp(rowID,modalType) {
+    var modalCover = $(".modal-cover");
+    var tableContents = tableContent.data;
+    switch (modalType) {
+        case "edit":
+            var name = $("#input-name").value;
+            var content = $("#input-content").value;
+            var value = $("#input-value").value;
+            for (let i = 0; i < tableContents.length; i++) {
+                if (tableContents[i].id === parseInt(rowID)) {
+                    tableContents[i].name = name;
+                    tableContents[i].content = content;
+                    tableContents[i].value = value;
+                }
+            }
+            break;
+        case "delete":
+            for (let i = 0; i < tableContents.length; i++) {
+                if (tableContents[i].id === parseInt(rowID)) {
+                    tableContent.data.splice(i, 1);
+                }
+            }
+            break;
+        default:
+            break;
+    }
+    hideModal(modalType);
+    refreshTableContent(tableContents);
+}
+/**
+ * 隐藏弹窗
+ *
+ * @param {string} modalType 弹窗类型
+ */
+function _hideModal(modalType) {
+    return function () {
+        hideModal(modalType);
+    }
+}
+function hideModal(modalType) {
+    var modalCover = $(".modal-cover");
+    switch (modalType) {
+        case "edit":
+            modalCover.removeAttribute("style");
+            $("#edit-modal").removeAttribute("style");
+            break;
+        case "delete":
+            modalCover.removeAttribute("style");
+            $("#delete-modal").removeAttribute("style");
+            break;
+        default:
+            break;
+    }
+    //恢复滚动
+    document.body.removeAttribute("style");
+}
 //以下为工具类
 /**
 * 添加类
@@ -253,12 +415,13 @@ function removeClass(el,delClassName) {
 function init() {
     var tableNav = $("#left-nav");
     var navList = $("#main-menu");
+    var table = $(".table");
     document.addEventListener("scroll",scrollPage,false);
     tableNav.addEventListener("mouseenter",showNavScrollBar,false);
     tableNav.addEventListener("mouseleave",hideNavScrollBar,false);
     navList.addEventListener("click",toggleSubMenu,false);
-    loadNavData();
-    refreshTable();
+    table.addEventListener("click",clickTableBtn,false);
+    loadMockData();
     initTableNav();
     //calcNavHeight();
 }
