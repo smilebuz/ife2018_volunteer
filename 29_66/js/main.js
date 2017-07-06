@@ -199,13 +199,14 @@ function hideNavScrollBar() {
  *
  */
 function toggleSubMenu(event) {
-    let menuIndex = parseInt(event.target.getAttribute("data-menu-index"));
-    let subMenuStatus = event.target.getAttribute("data-submenu-show");
+    let targetElement = event.target;
+    let menuIndex = parseInt(targetElement.getAttribute("data-menu-index"));
+    let subMenuStatus = targetElement.getAttribute("data-submenu-show");
     //当前已经显示二级菜单
     if (subMenuStatus==="true") {
-        let subMenu = event.target.querySelector("ul");
-        event.target.removeChild(subMenu);
-        event.target.setAttribute("data-submenu-show","false");
+        let subMenu = targetElement.querySelector("ul");
+        targetElement.removeChild(subMenu);
+        targetElement.setAttribute("data-submenu-show","false");
     }
     //当前没有显示二级菜单
     else {
@@ -218,8 +219,8 @@ function toggleSubMenu(event) {
             item.appendChild(text);
             subList.appendChild(item);
         }
-        event.target.appendChild(subList);
-        event.target.setAttribute("data-submenu-show","true");
+        targetElement.appendChild(subList);
+        targetElement.setAttribute("data-submenu-show","true");
     }
     //改变高度
     calcNavDefaultHeight();
@@ -251,9 +252,12 @@ function clickTableBtn(event) {
 function showEditModal(rowID) {
     //停止滚动事件
     document.body.style.overflowY = "hidden";
-    var name = event.target.parentElement.parentElement.firstElementChild.textContent;
-    var content = event.target.parentElement.parentElement.firstElementChild.nextElementSibling.textContent;
-    var value = event.target.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.textContent;
+    //获取内容文本
+    var row = event.target.parentElement.parentElement;
+    var name = getChildElement(row,0).textContent;
+    var content = getChildElement(row,1).textContent;
+    var value = getChildElement(row,2).textContent;
+    //高度计算
     var modalHeight = parseInt(window.getComputedStyle($("#edit-modal")).height);
     var modalWidth = parseInt(window.getComputedStyle($("#edit-modal")).width);
     var docHeight = document.body.offsetHeight;
@@ -407,6 +411,23 @@ function removeClass(el,delClassName) {
         classes.splice(position,1);
     }
     el.className = classes.join(" ");
+}
+/**
+ * 查找某一位置上元素的子元素
+ *
+ * @param {Object} parentElement 父元素
+ * @param {number} index 子元素的位置
+ * @return {Object} 查找的子元素
+ */
+function getChildElement(parentElement, index) {
+    var childNodes = parentElement.childNodes;
+    var childElements = [];
+    for (var i = 0; i < childNodes.length; i++) {
+        if (childNodes[i].nodeType === 1) {
+            childElements.push(childNodes[i]);
+        }
+    }
+    return childElements[index];
 }
 /**
  * 页面加载时需要进行的初始化操作
