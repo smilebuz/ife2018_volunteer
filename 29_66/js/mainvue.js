@@ -1,0 +1,3 @@
+var vmNav = new Vue({
+    
+})
