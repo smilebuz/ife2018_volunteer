@@ -4,34 +4,29 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
         <meta charset="utf-8">
         <title>HELLO WORLD PRODUCT</title>
-        <link rel="stylesheet" href="../css/mainless.css">
+        <link rel="stylesheet" href="../css/mainscss.css">
     </head>
     <body>
         <header>
             <img src="../image/chai.jpg" alt="公司logo" id="logo">
-            <nav>
+            <nav id="nav">
                 <span>HOME</span>
                 <span>
                     PRODUCT
                     <ul id="product-list">
-                        <li>PRODUCT1</li>
-                        <li>PRODUCT2</li>
-                        <li>PRODUCT3</li>
+                        <product-item v-for="product in products" v-bind:product="product"></product-item>
                     </ul>
                 </span>
                 <span>
                     SUPPORT
                     <ul id="support-list">
-                        <li>SUPPORT1</li>
-                        <li>SUPPORT2</li>
-                        <li>SUPPORT3</li>
+                        <support-item v-for="support in supports" v-bind:support="support"></support-item>
                     </ul>
                 </span>
                 <span>
                     ABOUT
                     <ul id="about-list">
-                        <li>INFO</li>
-                        <li>CONTACT</li>
+                        <about-item v-for="about in abouts" v-bind:about="about"></about-item>
                     </ul>
                 </span>
             </nav>
@@ -54,43 +49,13 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>TableHead</th>
-                        <th>TableHead</th>
-                        <th>Head</th>
-                        <th>TableHead</th>
+                        <th>Name</th>
+                        <th>Content</th>
+                        <th>Value</th>
+                        <th>Operation</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Content Text</td>
-                        <td>Content Tex Text</td>
-                        <td>123.432</td>
-                        <td>
-                            <button type="button" name="button">BTN</button>
-                            <button type="button" name="button">BTN</button>
-                            <button type="button" name="button">BTN</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Content Text</td>
-                        <td>Content Tex Text</td>
-                        <td>123.432</td>
-                        <td>
-                            <button type="button" name="button">BTN</button>
-                            <button type="button" name="button">BTN</button>
-                            <button type="button" name="button">BTN</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Content Text</td>
-                        <td>Content Tex Text</td>
-                        <td>123.432</td>
-                        <td>
-                            <button type="button" name="button">BTN</button>
-                            <button type="button" name="button">BTN</button>
-                            <button type="button" name="button">BTN</button>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </main>
@@ -125,6 +90,7 @@
         </div>
         <!--引入js-->
         <script src="../../vue/vue.js" charset="utf-8"></script>
+        <script src="../js/mainvue.js" charset="utf-8"></script>
         <script src="../js/data.js" charset="utf-8"></script>
         <script src="../js/main.js" charset="utf-8"></script>
     </body>
