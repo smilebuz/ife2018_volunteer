@@ -1,0 +1,194 @@
+*
+    margin: 0
+    padding: 0
+//header
+header
+    display: flex
+    align-items: center
+    padding-left: 16%
+    height: 80px
+    font-size: 16px
+    color: #fff
+    background-color: #000
+    @media screen and (max-width: 960px)
+        flex-direction: column
+        height: 400px
+
+#logo
+    width: 50px
+    height: 50px
+    margin-right: 35%
+    border-radius: 50%
+    @media screen
+        @media (max-width: 1200px)
+            margin-right: 25%
+        @media (max-width: 960px)
+            margin: 0
+
+nav
+    height: 100%
+    line-height: 80px
+    @media screen and (max-width: 960px)
+        height: auto
+        display: flex
+        flex-direction: column
+        line-height: 40px
+    span
+        display: inline-flex
+        flex-direction: column
+        padding-right: 50px
+        cursor: pointer
+        background: url(../image/down.png) no-repeat 90px 33px
+        @media screen and (max-width: 960px)
+            background-position: 90px 13px
+        &:first-child
+            background: none
+        ul
+            width: 100%
+            list-style: none
+            z-index: 99
+            li
+                line-height: 40px
+        &:not(target):not(hover)
+            ul
+                visibility: collapse
+                @media screen and (max-width: 960px)
+                    display: none
+        &:hover
+            ul
+                visibility: visible
+                @media screen and (max-width: 960px)
+                    display: block
+
+//banner
+.banner
+    display: flex
+    height: 260px
+    background-color: #2d7079
+
+.banner-slogan
+    display: flex
+    flex-direction: column
+    justify-content: center
+    flex: 1
+    color: #fff
+    background: url(../image/banner_left_v.png) no-repeat top right
+    span
+        margin-top: 10px
+        margin-left: 33%
+        font-size: 32px
+        line-height: 1
+        opacity: 0.5
+        &:last-child
+            margin-top: 25px
+            opacity: 1
+            font-size: 44px
+
+.banner-poster
+    flex: 1
+    background: url(../image/banner_lg.png) no-repeat
+
+//main
+main
+    display: flex
+    max-width: 960px
+    margin: 20px auto
+
+#left-nav
+    min-width: 200px
+    .sub-menu
+        margin-left: -20px
+        padding-left: 40px
+        list-style: none
+        background-color: #fff
+        li
+            margin-bottom: 5px
+
+#main-menu
+    padding-top: 20px
+    padding-bottom: 10px
+    border: 1px solid #efefef
+    font-size: 14px
+    list-style: none
+    background-color: #efefef
+    li
+        margin-bottom: 10px
+        padding-left: 20px
+        cursor: default
+
+.table
+    flex: 1
+    margin-left: 20px
+    width: 740px
+    border-collapse: collapse
+    tbody
+        text-align: center
+        tr
+            &:nth-child(even)
+                background-color: #f0f0f0
+    th
+    td
+        border: 2px solid #ccc
+        padding-top: 8px
+        padding-bottom: 8px
+    th
+        padding-top: 10px
+        padding-bottom: 10px
+        background-color: #dedede
+    button
+        border: 1px solid #ccc
+        border-radius: 5px
+        padding: 3px
+        margin-right: 10px
+        font-weight: 700
+        font-size: 12px
+        cursor: pointer
+        background-color: #fff
+        &:last-child
+            margin-right: 0
+
+//弹出层
+.modal-cover
+    display: none
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    z-index: 999
+    opacity: 0.7
+    background-color: #b2b2b2
+
+.modal
+    display: none
+    position: fixed
+    width: 260px
+    height: 150px
+    padding: 30px
+    z-index: 9999
+    background-color: #fff
+
+.form
+    display: flex
+    height: 100%
+    flex-direction: column
+    justify-content: space-between
+    label
+        display: flex
+        justify-content: space-between
+        vertical-align: middle
+    input
+        height: 25px
+        padding-left: 5px
+        padding-right: 5px
+        border: 1px solid #ccc
+
+.btn-group
+    display: flex
+    justify-content: space-between
+
+.button
+    border: 1px solid #ccc
+    height: 40px
+    width: 113px
+    cursor: pointer
+    background-color: #fff
