@@ -1,0 +1,112 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+$background: #d9d9d9;
+$btn-border: 1px solid #000;
+//header and footer style class
+@mixin fixed-part($pos) {
+    position: fixed;
+    #{$pos}: 0;
+    height: 30px;
+    width: 100%;
+    text-align: center;
+    background: $background;
+    & span {
+        line-height: 30px;
+    }
+}
+//header
+$height: 30px;
+$btn-height: 20px;
+@mixin header-btn($float-position) {
+    float: #{$float-position};
+    height: $btn-height;
+    margin-top: 5px;
+    margin-#{$float-position}: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    line-height: $btn-height;
+    border: $btn-border;
+    background: $background;
+}
+#header-list {
+    @include fixed-part("top");
+    #add-item {
+        @include header-btn("right");
+    }
+}
+#header-edit {
+    @include fixed-part("top");
+    display: none;
+    #cancel-edit {
+        @include header-btn("left");
+    }
+    #done-edit {
+        @include header-btn("right");
+    }
+}
+//main
+$priority-background: #fbebeb;
+$status-background: #f0fded;
+#main-list {
+    margin-top: 35px;
+    margin-bottom: 35px;
+    ul {
+        margin-top: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
+        li {
+            border: 1px solid #ccc;
+            margin-bottom: 3px;
+        }
+    }
+}
+.condition-container {
+    display: flex;
+    height: 30px;
+    border-bottom: 1px solid #ccc;
+    & div {
+        flex: 1;
+    }
+}
+#priority-container {
+    @extend .condition-container;
+    background: $priority-background;
+}
+#status-container {
+    @extend .condition-container;
+    background: $status-background;
+}
+#main-edit {
+    display: none;
+    margin:35px 5px;
+    textarea {
+        margin-top: 5px;
+    }
+}
+#edit-priority-container,
+#edit-status-container {
+    @extend .condition-container;
+    span {
+        border: 1px solid #ccc;
+    }
+}
+#edit-priority-container {
+    [data-edit-priority-selected=true] span {
+        border-color: #ff4f3e;
+    }
+}
+#edit-status-container {
+    [data-edit-status-selected=true] span {
+        border-color: #ff4f3e;
+    }
+}
+//footer
+footer {
+    @include fixed-part("bottom");
+    display: flex;
+    span {
+        flex: 1;
+    }
+}

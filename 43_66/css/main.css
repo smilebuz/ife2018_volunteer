@@ -1,0 +1,111 @@
+* {
+  margin: 0;
+  padding: 0; }
+
+#header-list {
+  position: fixed;
+  top: 0;
+  height: 30px;
+  width: 100%;
+  text-align: center;
+  background: #d9d9d9; }
+  #header-list span {
+    line-height: 30px; }
+  #header-list #add-item {
+    float: right;
+    height: 20px;
+    margin-top: 5px;
+    margin-right: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    line-height: 20px;
+    border: 1px solid #000;
+    background: #d9d9d9; }
+
+#header-edit {
+  position: fixed;
+  top: 0;
+  height: 30px;
+  width: 100%;
+  text-align: center;
+  background: #d9d9d9;
+  display: none; }
+  #header-edit span {
+    line-height: 30px; }
+  #header-edit #cancel-edit {
+    float: left;
+    height: 20px;
+    margin-top: 5px;
+    margin-left: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    line-height: 20px;
+    border: 1px solid #000;
+    background: #d9d9d9; }
+  #header-edit #done-edit {
+    float: right;
+    height: 20px;
+    margin-top: 5px;
+    margin-right: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    line-height: 20px;
+    border: 1px solid #000;
+    background: #d9d9d9; }
+
+#main-list {
+  margin-top: 35px;
+  margin-bottom: 35px; }
+  #main-list ul {
+    margin-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px; }
+    #main-list ul li {
+      border: 1px solid #ccc;
+      margin-bottom: 3px; }
+
+.condition-container, #priority-container, #status-container, #edit-priority-container,
+#edit-status-container {
+  display: flex;
+  height: 30px;
+  border-bottom: 1px solid #ccc; }
+  .condition-container div, #priority-container div, #status-container div, #edit-priority-container div,
+  #edit-status-container div {
+    flex: 1; }
+
+#priority-container {
+  background: #fbebeb; }
+
+#status-container {
+  background: #f0fded; }
+
+#main-edit {
+  display: none;
+  margin: 35px 5px; }
+  #main-edit textarea {
+    margin-top: 5px; }
+
+#edit-priority-container span,
+#edit-status-container span {
+  border: 1px solid #ccc; }
+
+#edit-priority-container [data-edit-priority-selected=true] span {
+  border-color: #ff4f3e; }
+
+#edit-status-container [data-edit-status-selected=true] span {
+  border-color: #ff4f3e; }
+
+footer {
+  position: fixed;
+  bottom: 0;
+  height: 30px;
+  width: 100%;
+  text-align: center;
+  background: #d9d9d9;
+  display: flex; }
+  footer span {
+    line-height: 30px; }
+  footer span {
+    flex: 1; }
+
+/*# sourceMappingURL=main.css.map */

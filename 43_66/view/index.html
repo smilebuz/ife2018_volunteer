@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>A Simple TodoList</title>
+        <link rel="stylesheet" href="../css/main.css">
+    </head>
+    <body>
+        <header id="header-list">
+            <!--button type="button" id="cancel-edit">Cancel</button-->
+            <span>Title</span>
+            <button type="button" id="add-item">Add</button>
+            <!--button type="button" id="done-edit">Done</button-->
+        </header>
+        <main id="main-list">
+            <div id="priority-container">
+                <div class="">
+                    高优
+                </div>
+                <div class="">
+                    中优
+                </div>
+                <div class="">
+                    低优
+                </div>
+            </div>
+            <div id="status-container">
+                <div class="">
+                    进行中
+                </div>
+                <div class="">
+                    待办
+                </div>
+                <div class="">
+                    已完成
+                </div>
+            </div>
+            <ul id="task-list">
+
+            </ul>
+        </main>
+        <footer>
+            <span id="onething">OneThing</span>
+            <span id="all">All</span>
+        </footer>
+        <!--第二套header main-->
+        <header id="header-edit">
+            <button type="button" id="cancel-edit">Cancel</button>
+            <span>Title</span>
+            <button type="button" id="done-edit">Done</button>
+        </header>
+        <main id="main-edit">
+            <div id="edit-priority-container">
+                <div class="edit-priority" data-priority-value="high">
+                    <span>高优</span>
+                </div>
+                <div class="edit-priority" data-priority-value="medium">
+                    <span>中优</span>
+                </div>
+                <div class="edit-priority" data-priority-value="low">
+                    <span>低优</span>
+                </div>
+            </div>
+            <div id="edit-status-container">
+                <div class="edit-status" data-status-value="inprogress">
+                    <span>进行中</span>
+                </div>
+                <div class="edit-status" data-status-value="waiting">
+                    <span>待办</span>
+                </div>
+                <div class="edit-status" data-status-value="complete">
+                    <span>已完成</span>
+                </div>
+            </div>
+            <textarea rows="8" cols="80" id="task-content"></textarea>
+        </main>
+        <!--js脚本-->
+        <script src="../js/lib/hammer.min.js" charset="utf-8"></script>
+        <script src="../js/custom/main.js" charset="utf-8"></script>
+    </body>
+</html>
