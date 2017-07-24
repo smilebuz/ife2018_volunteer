@@ -57,8 +57,12 @@ $status-background: #f0fded;
         padding-left: 5px;
         padding-right: 5px;
         li {
+            display: flex;
             border: 1px solid #ccc;
             margin-bottom: 3px;
+            div {
+                flex-basis: 100px;
+            }
         }
     }
 }
@@ -73,16 +77,26 @@ $status-background: #f0fded;
 #priority-container {
     @extend .condition-container;
     background: $priority-background;
+    [data-filter-priority-selected=true] span {
+        border: 1px solid #ff4f3e;
+    }
 }
 #status-container {
     @extend .condition-container;
     background: $status-background;
+    [data-filter-status-selected=true] span {
+        border: 1px solid #ff4f3e;
+    }
 }
 #main-edit {
     display: none;
+    width: 100%;
     margin:35px 5px;
     textarea {
-        margin-top: 5px;
+        width: 100%;
+        margin: 5px;
+        border: 1px solid #000;
+        padding: 5px;
     }
 }
 #edit-priority-container,

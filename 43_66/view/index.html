@@ -14,25 +14,25 @@
         </header>
         <main id="main-list">
             <div id="priority-container">
-                <div class="">
-                    高优
+                <div class="priority-filter" data-priority-value="high">
+                    <span>高优</span>
                 </div>
-                <div class="">
-                    中优
+                <div class="priority-filter" data-priority-value="medium">
+                    <span>中优</span>
                 </div>
-                <div class="">
-                    低优
+                <div class="priority-filter" data-priority-value="low">
+                    <span>低优</span>
                 </div>
             </div>
             <div id="status-container">
-                <div class="">
-                    进行中
+                <div class="status-filter" data-status-value="inprogress">
+                    <span>进行中</span>
                 </div>
-                <div class="">
-                    待办
+                <div class="status-filter" data-status-value="waiting">
+                    <span>待办</span>
                 </div>
-                <div class="">
-                    已完成
+                <div class="status-filter" data-status-value="complete">
+                    <span>已完成</span>
                 </div>
             </div>
             <ul id="task-list">
@@ -51,24 +51,24 @@
         </header>
         <main id="main-edit">
             <div id="edit-priority-container">
-                <div class="edit-priority" data-priority-value="high">
+                <div class="edit-priority" data-priority-value="high" data-filter-priority-selected="false">
                     <span>高优</span>
                 </div>
-                <div class="edit-priority" data-priority-value="medium">
+                <div class="edit-priority" data-priority-value="medium" data-filter-priority-selected="false">
                     <span>中优</span>
                 </div>
-                <div class="edit-priority" data-priority-value="low">
+                <div class="edit-priority" data-priority-value="low" data-filter-priority-selected="false">
                     <span>低优</span>
                 </div>
             </div>
             <div id="edit-status-container">
-                <div class="edit-status" data-status-value="inprogress">
+                <div class="edit-status" data-status-value="inprogress" data-filter-status-selected="false">
                     <span>进行中</span>
                 </div>
-                <div class="edit-status" data-status-value="waiting">
+                <div class="edit-status" data-status-value="waiting" data-filter-status-selected="false">
                     <span>待办</span>
                 </div>
-                <div class="edit-status" data-status-value="complete">
+                <div class="edit-status" data-status-value="complete" data-filter-status-selected="false">
                     <span>已完成</span>
                 </div>
             </div>
