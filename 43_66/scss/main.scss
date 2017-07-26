@@ -49,19 +49,43 @@ $btn-height: 20px;
 //main
 $priority-background: #fbebeb;
 $status-background: #f0fded;
+@mixin pan() {
+    display: flex;
+    justify-content: space-around;
+    width: 200px;
+    background: #d9d9d9;
+    & span {
+        padding-left: 5px;
+        padding-right: 5px;
+        text-align: middle;
+    }
+}
 #main-list {
     margin-top: 35px;
     margin-bottom: 35px;
     ul {
         margin-top: 5px;
-        padding-left: 5px;
-        padding-right: 5px;
         li {
             display: flex;
-            border: 1px solid #ccc;
+            width: auto;
+            border-top: 1px solid #d9d9d9;
+            border-bottom: 1px solid #d9d9d9;
             margin-bottom: 3px;
-            div {
-                flex-basis: 100px;
+            .pan-left {
+                @include pan();
+                margin-left: -200px;
+            }
+            .prefix {
+                width: 10%;
+                padding-left: 5px;
+            }
+            p {
+                width: 90%;
+                padding-right: 5px;
+            }
+            .pan-right {
+                @include pan();
+                margin-right: -200px;
             }
         }
     }

@@ -21,9 +21,10 @@ let refreshTaskList = () => {
         let priority = task.priority;
         let status = task.status;
         let content = task.content;
-        taskItems += `<li data-id=${id} data-priority=${priority} data-status=${status}><div><p>${priority}</p><p>${status}</p></div><p>${content}</p></li>`
+        taskItems += `<li data-id=${id} data-priority=${priority} data-status=${status}><div class='pan-left'><span class='task-status' data-status='complete'>已完成</span><span class='task-status' data-status='waiting'>待办</span><span class='task-status' data-status='inprogress'>进行中</span></div><div class='prefix'><p>${priority}</p><p>${status}</p></div><p>${content}</p><div class='pan-right'><span class='task-edit'>编辑</span><span class='task-delete'>删除</span></div></li>`;
     }
     $("#task-list").innerHTML = taskItems;
+    initPanEvents();
 };
 /**
  * 显示正在进行的优先级最高的时间最久的任务
@@ -101,21 +102,37 @@ let filterTask = () => {
         let priority = task.priority;
         let status = task.status;
         let content = task.content;
-        taskItems += `<li data-id=${id} data-priority=${priority} data-status=${status}><div><p>${priority}</p><p>${status}</p></div><p>${content}</p></li>`
+        taskItems += `<li data-id=${id} data-priority=${priority} data-status=${status}><div class='pan-left'><span class='task-status' data-status='complete'>已完成</span><span class='task-status' data-status='waiting'>待办</span><span class='task-status' data-status='inprogress'>进行中</span></div><div class='prefix'><p>${priority}</p><p>${status}</p></div><p>${content}</p><div class='pan-right'><span class='task-edit'>编辑</span><span class='task-delete'>删除</span></div></li>`;
     }
     $("#task-list").innerHTML = taskItems;
+    initPanEvents();
 };
 /**
  * 更改样式
  *
  * @param {string} opType 操作类型
+ * @param {string} taskID 任务ID
  */
-let toggleDisplay = (opType) => {
-    if (opType === "list") {
+let toggleDisplay = (opType, taskID) => {
+    if (opType === "add" || opType === "edit") {
         $("#header-list").style.display = "none";
         $("#main-list").style.display = "none";
         $("#header-edit").style.display = "block";
         $("#main-edit").style.display = "block";
+        if (opType === "add") {
+            $("#done-edit").setAttribute("data-optype","add");
+        }
+        else {
+            //编辑
+            $("#done-edit").setAttribute("data-optype","edit");
+            $("#done-edit").setAttribute("taskID",taskID);
+            let task = JSON.parse(localStorage.getItem(taskID));
+            let priority = task.priority;
+            let status = task.status;
+            $("#edit-priority-container [data-priority-value='" + priority + "']").setAttribute("data-edit-priority-selected","true");
+            $("#edit-status-container [data-status-value='" + status + "']").setAttribute("data-edit-status-selected","true");
+            $("#task-content").value = task.content;
+        }
     }
     else {
         $("#header-list").style.display = "block";
@@ -135,24 +152,108 @@ let toggleDisplay = (opType) => {
     }
 };
 /**
- * 重置编辑面板
+ * 添加/编辑新的任务
  *
  */
-/**
- * 添加新的任务
- *
- */
-let addTask = () => {
-    let taskContent = $("#task-content").value;
-    let taskPriority = $("[data-edit-priority-selected='true']").getAttribute("data-priority-value");
-    let taskStatus = $("[data-edit-status-selected='true']").getAttribute("data-status-value");
-    let newTask = {
-        priority: taskPriority,
-        status: taskStatus,
-        content: taskContent
-    };
-    localStorage.setItem(new Date().getTime().toString(),JSON.stringify(newTask));
+let editTask = () => {
+    let opType = $("#done-edit").getAttribute("data-optype");
+    switch (opType) {
+        case "add":
+            let taskContent = $("#task-content").value;
+            let taskPriority = $("[data-edit-priority-selected='true']").getAttribute("data-priority-value");
+            let taskStatus = $("[data-edit-status-selected='true']").getAttribute("data-status-value");
+            let newTask = {
+                priority: taskPriority,
+                status: taskStatus,
+                content: taskContent
+            };
+            localStorage.setItem(new Date().getTime().toString(),JSON.stringify(newTask));
+            break;
+        case "edit":
+            let taskID = $("#done-edit").getAttribute("taskID");
+            let task = JSON.parse(localStorage.getItem(taskID));
+            task.priority = $("[data-edit-priority-selected='true']").getAttribute("data-priority-value");
+            task.status = $("[data-edit-status-selected='true']").getAttribute("data-status-value");
+            task.content = $("#task-content").value;
+            localStorage[taskID] = JSON.stringify(task);
+            break;
+        default:
+            break;
+    }
 };
+/**
+ * 滑动事件
+ *
+ */
+let initPanEvents = () => {
+    let curTaskItems = $$("#task-list li");
+    for (let i = 0; i < curTaskItems.length; i++) {
+        new Hammer(curTaskItems[i]).on("panleft panright panend", (event) => {
+            switch (event.type) {
+                case "panleft":
+                    //let panDis = Math.abs(event.deltaX);
+                    let panDisLeft = event.deltaX;
+                    if (Math.abs(panDisLeft) <= 200) {
+                        console.log(panDisLeft);
+                        curTaskItems[i].style.transform = "translateX("+panDisLeft+"px)";
+                    }
+                    else {
+
+                    }
+                    break;
+                case "panright":
+                    let panDisRight = event.deltaX;
+                    if (panDisRight <= 200) {
+                        console.log(panDisRight);
+                        curTaskItems[i].style.transform = "translateX("+panDisRight+"px)";
+                    }
+                    else {
+
+                    }
+                    break;
+                case "panend":
+                    let panDisFinal = Math.abs(event.deltaX);
+                    console.log("end: " + panDisFinal);
+                    break;
+                default:
+
+            }
+        });
+    }
+}
+//以下为工具类
+/**
+* 添加类
+*
+* @param {Object} el 添加类的元素
+* @param {string} newClassName 添加的类名称
+*/
+function addClass(el,newClassName) {
+    var classes = el.className.split(" ");
+    if (!classes.length) {
+        classes.push(newClassName);
+    }
+    else {
+        if (classes.indexOf(newClassName)<0) {
+            classes.push(newClassName);
+        }
+    }
+    el.className = classes.join(" ");
+}
+/**
+* 删除类
+*
+* @param {Object} el 删除类的元素
+* @param {string} delClassName 删除的类名称
+*/
+function removeClass(el,delClassName) {
+    var classes = el.className.split(" ");
+    var position = classes.indexOf(delClassName);
+    if (position>=0) {
+        classes.splice(position,1);
+    }
+    el.className = classes.join(" ");
+}
 /**
  *
  *
@@ -167,6 +268,7 @@ let init = () => {
     let doneEditBtn = new Hammer($("#done-edit"));
     let editPriorities = $$(".edit-priority");
     let editStatus = $$(".edit-status");
+    let taskList = new Hammer($("#task-list"));
     oneThingBtn.on("tap",() => {
         showImportantTask();
     });
@@ -174,15 +276,16 @@ let init = () => {
         refreshTaskList();
     });
     addItemBtn.on("tap",() => {
-        toggleDisplay("list");
+        toggleDisplay("add");
     });
     cancelEdit.on("tap",() => {
         toggleDisplay("cancel");
     });
     doneEditBtn.on("tap",() => {
-        addTask();
+        editTask();
         toggleDisplay("done");
     });
+    //编辑
     for (let i = 0; i < editPriorities.length; i++) {
         new Hammer(editPriorities[i]).on("tap",() => {
             editPriorities[i].setAttribute("data-edit-priority-selected","true");
@@ -203,14 +306,15 @@ let init = () => {
             });
         });
     }
+    //筛选
     for (let i = 0; i < priorityFilters.length; i++) {
         new Hammer(priorityFilters[i]).on("tap", () => {
             let cur_selected = priorityFilters[i].getAttribute("data-filter-priority-selected");
-            if (cur_selected === "false") {
-                priorityFilters[i].setAttribute("data-filter-priority-selected","true");
+            if (cur_selected === "true") {
+                priorityFilters[i].setAttribute("data-filter-priority-selected","false");
             }
             else {
-                priorityFilters[i].setAttribute("data-filter-priority-selected","false");
+                priorityFilters[i].setAttribute("data-filter-priority-selected","true");
             }
             filterTask();
         });
@@ -218,15 +322,37 @@ let init = () => {
     for (let i = 0; i < statusFilters.length; i++) {
         new Hammer(statusFilters[i]).on("tap", () => {
             let cur_selected = statusFilters[i].getAttribute("data-filter-status-selected");
-            if (cur_selected === "false") {
-                statusFilters[i].setAttribute("data-filter-status-selected","true");
+            if (cur_selected === "true") {
+                statusFilters[i].setAttribute("data-filter-status-selected","false");
             }
             else {
-                statusFilters[i].setAttribute("data-filter-status-selected","false");
+                statusFilters[i].setAttribute("data-filter-status-selected","true");
             }
             filterTask();
         });
     }
+    //滑动按钮
+    taskList.on("tap", (event) => {
+        let target = event.target;
+        let targetClass = target.className;
+        if (targetClass.indexOf("status") >= 0) {
+            let taskID = target.parentElement.parentElement.getAttribute("data-id");
+            let status = target.getAttribute("data-status");
+            let task = JSON.parse(localStorage.getItem(taskID));
+            task.status = status;
+            localStorage[taskID] = JSON.stringify(task);
+            refreshTaskList();
+        }
+        if (targetClass.indexOf("task-edit") >= 0) {
+            let taskID = target.parentElement.parentElement.getAttribute("data-id");
+            toggleDisplay("edit",taskID);
+        }
+        if (targetClass.indexOf("task-delete") >= 0) {
+            let taskID = target.parentElement.parentElement.getAttribute("data-id");
+            localStorage.removeItem(taskID);
+            refreshTaskList();
+        }
+    });
     refreshTaskList();
 }
 
