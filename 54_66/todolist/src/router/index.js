@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
+import OneThing from '@/views/OneThing'
+import All from '@/views/All'
+import Add from '@/views/Add'
 
 Vue.use(Router)
 
@@ -8,8 +10,22 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      redirect: '/onething'
+    },
+    {
+      path: '/add',
+      name: 'add',
+      component: Add
+    },
+    {
+      path: '/onething',
+      name: 'onething',
+      component: OneThing
+    },
+    {
+      path: '/all',
+      name: 'all',
+      component: All
     }
   ]
 })
