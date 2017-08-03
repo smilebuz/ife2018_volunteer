@@ -8,7 +8,7 @@
 <script>
 import myHeader from '../components/HomeHeader'
 import myFooter from '../components/Footer'
-import taskFilter from '../components/taskFilter'
+import TaskFilter from '../components/TaskFilter'
 
 export default {
   data () {
@@ -16,7 +16,7 @@ export default {
     }
   },
   components: {
-    myHeader, myFooter, taskFilter
+    myHeader, myFooter, TaskFilter
   }
 }
 </script>

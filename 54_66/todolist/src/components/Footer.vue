@@ -19,6 +19,10 @@ export default {
   $text-color: #000;
   footer {
     display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
     background-color: $bg-color;
     span {
       flex: 1;

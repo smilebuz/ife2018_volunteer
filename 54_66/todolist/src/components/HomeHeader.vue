@@ -20,6 +20,10 @@ export default {
 <style lang="scss" scoped>
   $bg-color: #d9d9d9;
   header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     background-color: $bg-color;
     button {
       float: right;
