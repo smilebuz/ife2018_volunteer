@@ -1,0 +1,7 @@
+列表展示、筛选：
+  父组件: all
+  子组件: homeheader taskfilter
+  其他组件: state utils
+
+  逻辑
+     子->父: taskfilter => all all需要监听taskfilter中筛选条件的变化 改变自身实例中tasks[]的值 utils.refresh

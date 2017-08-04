@@ -26,6 +26,7 @@ export default {
         content: this.content
       }
       localStorage.setItem(new Date().getTime().toString(), JSON.stringify(newTask))
+      this.$router.push('all')
     }
   }
 }

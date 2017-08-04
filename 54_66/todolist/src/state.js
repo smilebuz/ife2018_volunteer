@@ -4,7 +4,8 @@ export default new Vue({
   data () {
     return {
       priority: '',
-      status: ''
+      status: '',
+      tasks: []
     }
   },
   methods: {

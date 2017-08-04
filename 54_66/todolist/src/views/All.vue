@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="">
     <myHeader></myHeader>
-    <taskFilter></taskFilter>
+    <taskFilter v-on:filter='filterTask'></taskFilter>
     <ul>
       <li v-for='task, index in tasks' :key='index' v-bind:data-id='task.id'>{{ task.priority }}{{ task.status }}{{ task.content }}</li>
     </ul>
@@ -13,6 +13,7 @@
 import myHeader from '../components/HomeHeader'
 import myFooter from '../components/Footer'
 import TaskFilter from '../components/TaskFilter'
+// import state from '../state.js'
 
 export default {
   data () {
@@ -37,6 +38,9 @@ export default {
           content: content
         })
       }
+    },
+    filterTask (tasks) {
+      this.tasks = tasks
     }
   },
   mounted () {

@@ -56,6 +56,25 @@ export default {
       } else {
         state.set(type, '')
       }
+      switch (this.$route.name) {
+        case 'all':
+          // 筛选
+          let priorityItem = document.querySelector('.priority-filter > .selected')
+          let statusItem = document.querySelector('.status-filter > .selected')
+          let priority = ''
+          let status = ''
+          if (priorityItem) {
+            priority = priorityItem.getAttribute('data-value')
+          }
+          if (statusItem) {
+            status = statusItem.getAttribute('data-value')
+          }
+          let tasks = utils.filterTask(priority, status)
+          this.$emit('filter', tasks)
+          break
+        default:
+          break
+      }
     }
   }
 }

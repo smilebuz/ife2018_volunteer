@@ -36,6 +36,30 @@ export default new Vue({
         // 添加类
         this.addClass(el, targetClass)
       }
+    },
+    // 筛选任务
+    filterTask: (priority, status) => {
+      let taskCount = localStorage.length
+      let tasks = []
+      for (var i = 0; i < taskCount; i++) {
+        let id = localStorage.key(i)
+        let task = JSON.parse(localStorage.getItem(id))
+        task.id = id
+        tasks.push(task)
+      }
+      let taskSort = tasks.filter((el, index, array) => {
+        if (!priority && !status) {
+          return el
+        }
+        if (!priority) {
+          return status === el.status
+        }
+        if (!status) {
+          return priority === el.priority
+        }
+        return priority === el.priority && status === el.status
+      })
+      return taskSort
     }
   }
 })
