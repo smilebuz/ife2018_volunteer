@@ -75,7 +75,20 @@ export default {
         default:
           break
       }
+    },
+    initTemplate () {
+      let name = this.$route.name
+      if (name === 'edit') {
+        let task = state.get('editTask')
+        let priority = task.priority
+        let status = task.status
+        document.querySelector('[data-value=' + priority + ']').click()
+        document.querySelector('[data-value=' + status + ']').click()
+      }
     }
+  },
+  mounted () {
+    this.initTemplate()
   }
 }
 </script>

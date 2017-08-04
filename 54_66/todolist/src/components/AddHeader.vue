@@ -18,14 +18,31 @@ export default {
   props: ['content'],
   methods: {
     addTask () {
-      let priority = state.get('priority')
-      let status = state.get('status')
-      let newTask = {
-        priority: priority,
-        status: status,
-        content: this.content
+      let pageName = this.$route.name
+      switch (pageName) {
+        case 'add':
+          let priority = state.get('priority')
+          let status = state.get('status')
+          let newTask = {
+            priority: priority,
+            status: status,
+            content: this.content
+          }
+          localStorage.setItem(new Date().getTime().toString(), JSON.stringify(newTask))
+          break
+        case 'edit':
+          let task = state.get('editTask')
+          let id = task.id
+          let editTask = {
+            priority: state.get('priority'),
+            status: state.get('status'),
+            content: this.content
+          }
+          localStorage[id] = JSON.stringify(editTask)
+          break
+        default:
+          break
       }
-      localStorage.setItem(new Date().getTime().toString(), JSON.stringify(newTask))
       this.$router.push('all')
     }
   }

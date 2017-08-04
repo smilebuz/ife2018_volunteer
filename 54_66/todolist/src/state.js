@@ -5,7 +5,7 @@ export default new Vue({
     return {
       priority: '',
       status: '',
-      tasks: []
+      editTask: ''
     }
   },
   methods: {
