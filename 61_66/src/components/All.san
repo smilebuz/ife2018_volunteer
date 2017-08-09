@@ -1,0 +1,90 @@
+<template>
+  <div>
+    <filter></filter>
+    <ul>
+      <li s-for='todo, index in filterTodos'>
+        <button s-for='item in statuses' on-click='changeStatus(todo.id, item.value)'> {{ item.message }} </button>
+        {{ todo.priority }} {{ todo.status }} {{ todo.content }}
+        <router-link to='/edit/{{ todo.id }}'>编辑</router-link>
+        <button on-click='remove(todo.id)'>删除</button>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+  import { connect } from 'san-store'
+  import { Link } from 'san-router'
+  import Filter from './Filter'
+
+  export default connect.san({todos:'todos', status:'status', priority: 'priority'},{initTodos:'initTodos', initFilter:'initFilter', remove:'removeTodo', changeStatus:'changeStatus', changeFilterStatus:'changeFilterStatus', changeFilterPriority:'changeFilterPriority'})({
+    initData: function () {
+      return {
+        statuses: [
+          {
+            message: '进行中',
+            value: 'inprogress'
+          },
+          {
+            message: '待办',
+            value: 'waiting'
+          },
+          {
+            message: '已完成',
+            value: 'complete'
+          }
+        ]
+      }
+    },
+    components: {
+      'router-link': Link,
+      'filter': Filter
+    },
+    attached: function () {
+      this.actions.initTodos();
+      this.actions.initFilter();
+    },
+    remove: function (id) {
+      this.actions.remove(id);
+    },
+    changeStatus: function(id, status) {
+      let info = {
+        id: id,
+        status: status
+      }
+      let curStatus = this.data.get('status');
+      let curPriority = this.data.get('priority');
+      this.actions.changeStatus(info);
+      this.actions.changeFilterPriority(curPriority);
+      this.actions.changeFilterStatus(curStatus);
+    },
+    computed: {
+      filterTodos: function () {
+        let todos = this.data.get('todos');
+        // let filter = this.data.get('filter');
+        let priority = this.data.get('priority');
+        let status = this.data.get('status');
+        if ( todos) {
+          // let priority = filter.priority;
+          // let status = filter.status;
+          todos = todos.filter((todo, index, array) => {
+            if (!priority && !status) {
+              return todo
+            }
+            if (!priority) {
+              return status === todo.status
+            }
+            if (!status) {
+              return priority === todo.priority
+            }
+            return priority === todo.priority && status === todo.status
+          })
+          return todos;
+        }
+      }
+    }
+  })
+</script>
+
+<style lang='scss'>
+</style>

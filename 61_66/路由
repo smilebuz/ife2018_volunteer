@@ -1,0 +1,6 @@
+App
+  path 0 /
+       1 onething
+       2 all
+       3 /edit/new
+       4 /edit/:id

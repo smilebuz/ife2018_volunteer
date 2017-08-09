@@ -1,0 +1,55 @@
+<template>
+  <div>
+    <filter s-ref='filter'></filter>
+    <textarea rows='8' value='{= content =}'></textarea>
+  </div>
+</template>
+
+<script>
+  import { router } from 'san-router';
+  import { connect } from 'san-store';
+  import Filter from './Filter';
+
+  export default connect.san({todos:'todos'},{})({
+    initData: function () {
+      return {
+        content: '',
+        id: -1
+      }
+    },
+    components: {
+      'filter': Filter
+    },
+    attached: function () {
+      let infoArr = router.locator.current.split('/');
+      let id = infoArr[infoArr.length - 1];
+      if(id!=="new"){
+        this.data.set('id', id);
+        this.fillContent();
+      }
+    },
+    fillContent: function () {
+      let id = this.data.get('id');
+      let todos = this.data.get('todos');
+      let index = -1;
+      todos.forEach((todo, i, arr) => {
+        if (todo.id === id) {
+          index = i;
+        }
+      });
+      let todo = todos[index];
+      let priority = todo.priority;
+      let status = todo.status;
+      let content = todo.content;
+      this.data.set('content', content);
+    }
+  })
+</script>
+
+<style lang='scss'>
+  textarea {
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: .2em;
+  }
+</style>

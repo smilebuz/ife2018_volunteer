@@ -1,0 +1,91 @@
+<template>
+  <div id='#app'>
+    <header>
+      <router-link s-if='path===3 || path===4' to='/all' class='link btn-link'>Cancel</router-link>
+      <span class='title'>San Todos</span>
+      <router-link s-if='path!==3 && path!==4' to='/edit/new' class='link btn-link'><span on-click='editTask'>Add</span></router-link>
+      <router-link s-else to='/all' class='link btn-link'><span on-click='finishEdit'>Done</span></router-link>
+    </header>
+
+    <!--filter s-if='path !== 1' s-ref='filter'></filter-->
+
+    <onething s-if='path === 1'></onething>
+    <all s-if='path === 2'></all>
+    <edit s-if='path === 3 || path ===4' s-ref='edit'></edit>
+
+    <footer s-if='path!==3 && path!==4'>
+      <router-link class='tab-link' to='/onething'>Onething</router-link>
+      <router-link class='tab-link' to='/all'>All</all>
+    </footer>
+  </div>
+</template>
+
+<script>
+  import Edit from '../components/Edit'
+  import Onething from '../components/Onething'
+  import All from '../components/All'
+  import Filter from '../components/Filter'
+  import { router,Link } from 'san-router'
+  import { connect } from 'san-store'
+
+  export default connect.san({}, {setPath:'setPath', addTodo:'addTodo', editTodo:'editTodo', init:'initTodos'}) ({
+    initData: function () {
+      return {
+        path: -1
+      };
+    },
+    components: {
+      'edit': Edit,
+      'onething': Onething,
+      'all': All,
+      'filter': Filter,
+      'router-link': Link
+    },
+    attached: function () {
+      this.actions.init();
+    },
+    finishEdit: function () {
+      // 获取信息
+      let content = this.ref('edit').data.get('content');
+      let priorities = this.ref('edit').ref('filter').data.get('priorities');
+      let statuses = this.ref('edit').ref('filter').data.get('statuses');
+      let priority = null;
+      priorities.forEach((item, i, array) => {
+        if (item.selected) {
+          priority = item.value;
+        }
+      });
+      let status = null;
+      statuses.forEach((item, i, array) => {
+        if (item.selected) {
+          status = item.value;
+        }
+      });
+      // 编辑
+      if (this.data.get('path') === 4) {
+        let id = this.ref('edit').data.get('id');
+        let todo = {
+          id: id,
+          priority: priority,
+          status: status,
+          content: content,
+        }
+        this.actions.editTodo(todo);
+      }
+      // 添加
+      else {
+        let todo = {
+          id: new Date().getTime().toString(),
+          priority: priority,
+          status: status,
+          content: content,
+        }
+        this.actions.addTodo(todo);
+      }
+    }
+  })
+</script>
+
+<style lang='scss'>
+  @import '../main.scss'
+</style>

@@ -1,0 +1,189 @@
+<template>
+  <div class='filter'>
+    <div class='priority-filter'>
+      <span s-for='priority, index in priorities' data-value='{{ priority.value }}' data-selected='{{ priority.selected }}' on-click='selectPriority(priority, index)'>{{ priority.message }}</span>
+    </div>
+    <div class='status-filter'>
+      <span s-for='status, index in statuses' data-value='{{ status.value }}' data-selected='{{ status.selected }}' on-click='selectStatus(status, index)'>{{ status.message }}</span>
+    </div>
+  </div>
+</template>
+
+<script>
+  import { connect } from 'san-store';
+  import { router } from 'san-router';
+
+  export default connect.san({path:'path', todos:'todos'},{changeFilter:'changeFilter', changeFilterPriority:'changeFilterPriority', changeFilterStatus:'changeFilterStatus'})( {
+    initData: function () {
+      return {
+        priorities: [
+          {
+            message: '高优',
+            value: 'high',
+            selected: false
+          },
+          {
+            message: '中优',
+            value: 'medium',
+            selected: false
+          },
+          {
+            message: '低优',
+            value: 'low',
+            selected: false
+          }
+        ],
+        statuses: [
+          {
+            message: '进行中',
+            value: 'inprogress',
+            selected: false,
+          },
+          {
+            message: '待办',
+            value: 'waiting',
+            selected: false,
+          },
+          {
+            message: '已完成',
+            value: 'complete',
+            selected: false
+          }
+        ],
+        id: -1
+      }
+    },
+    attached: function () {
+      if(this.data.get('path') === 4){
+        let infoArr = router.locator.current.split('/');
+        let id = infoArr[infoArr.length - 1];
+        this.data.set('id', id);
+        this.fillFilter();
+      }
+    },
+    detached: function () {
+      // this.resetFilter();
+    },
+    fillFilter: function () {
+      let id = this.data.get('id');
+      let todos = this.data.get('todos');
+      let index = -1;
+      todos.forEach((todo, i, arr) => {
+        if (todo.id === id) {
+          index = i;
+        }
+      });
+      let todo = todos[index];
+      let priority = todo.priority;
+      let status = todo.status;
+      let priorities = this.data.get('priorities');
+      let statuses = this.data.get('statuses');
+      let priorityObj = null;
+      let statusObj = null;
+      let priorityIndex = -1;
+      let statusIndex = -1;
+      priorities.forEach((item, i, arr) => {
+        if (item.value === priority) {
+          priorityObj = item;
+          priorityIndex = i;
+        }
+      });
+      statuses.forEach((item, i, arr) => {
+        if (item.value === status) {
+          statusObj = item;
+          statusIndex = i;
+        }
+      });
+      this.selectPriority(priorityObj, priorityIndex);
+      this.selectStatus(statusObj, statusIndex);
+    },
+    selectPriority: function (priority, index) {
+      let priorities = [...this.data.get('priorities')];
+      for(let i = 0;i<priorities.length;i++) {
+        if (i === index) {
+          priorities[index].selected = !priority.selected;
+        }
+        else {
+          priorities[i].selected = false;
+        }
+      }
+      this.data.set('priorities', priorities);
+      let path = this.data.get('path');
+      if (path === 2) {
+        // 筛选
+        let priority = '';
+        if (priorities[index].selected) {
+          priority = priorities[index].value;
+        }
+        else {
+          priority = '';
+        }
+        this.actions.changeFilterPriority(priority);
+      }
+    },
+    selectStatus: function (status, index) {
+      let statuses = [...this.data.get('statuses')];
+      for(let i = 0;i<statuses.length;i++) {
+        if (i === index) {
+          statuses[index].selected = !status.selected;
+        }
+        else {
+          statuses[i].selected = false;
+        }
+      }
+      this.data.set('statuses', statuses);
+      let path = this.data.get('path');
+      if (path === 2) {
+        // 筛选
+        let status = '';
+        if (statuses[index].selected) {
+          status = statuses[index].value;
+        }
+        else {
+          status = '';
+        }
+        this.actions.changeFilterStatus(status);
+      }
+    }
+    /*
+    resetFilter: function () {
+      let priorities = [...this.data.get('priorities')];
+      let statuses = [...this.data.get('statuses')];
+      for(let i = 0;i<priorities.length;i++) {
+        priorities[i].selected = false;
+      }
+      for(let i = 0;i<statuses.length;i++) {
+        statuses[i].selected = false;
+      }
+      this.data.set('statuses', statuses);
+      this.data.set('priorities', priorities);
+    }
+    */
+  })
+</script>
+
+<style lang='scss'>
+  @mixin filter-container($bg-color) {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-top: .5em;
+    padding-bottom: .5em;
+    background: $bg-color;
+    & [data-selected='true'] {
+      border: 1px solid red;
+    }
+    & [data-selected='false'] {
+      border: 1px solid blue;
+    }
+  }
+  .filter {
+    margin-top: 3em;
+    .priority-filter {
+      @include filter-container(#fbebeb)
+    }
+    .status-filter {
+      @include filter-container(#f0fded)
+    }
+  }
+</style>
