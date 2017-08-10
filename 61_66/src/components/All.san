@@ -1,12 +1,16 @@
 <template>
   <div>
     <filter></filter>
-    <ul>
+    <ul id='task-lisk'>
       <li s-for='todo, index in filterTodos'>
-        <button s-for='item in statuses' on-click='changeStatus(todo.id, item.value)'> {{ item.message }} </button>
+        <div class='btn-group'>
+          <button class='btn' s-for='item in statuses' on-click='changeStatus(todo.id, item.value)'> {{ item.message }} </button>
+        </div>
         {{ todo.priority }} {{ todo.status }} {{ todo.content }}
-        <router-link to='/edit/{{ todo.id }}'>编辑</router-link>
-        <button on-click='remove(todo.id)'>删除</button>
+        <div class='btn-group'>
+          <router-link to='/edit/{{ todo.id }}' class='btn'>编辑</router-link>
+          <button on-click='remove(todo.id)' class='btn'>删除</button>
+        </div>
       </li>
     </ul>
   </div>

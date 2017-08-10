@@ -1,10 +1,10 @@
 <template>
   <div id='#app'>
     <header>
-      <router-link s-if='path===3 || path===4' to='/all' class='link btn-link'>Cancel</router-link>
+      <router-link s-if='path===3 || path===4' to='/all' class='link btn btn-left'>Cancel</router-link>
       <span class='title'>San Todos</span>
-      <router-link s-if='path!==3 && path!==4' to='/edit/new' class='link btn-link'><span on-click='editTask'>Add</span></router-link>
-      <router-link s-else to='/all' class='link btn-link'><span on-click='finishEdit'>Done</span></router-link>
+      <router-link s-if='path!==3 && path!==4' to='/edit/new' class='link btn btn-right'><span on-click='editTask'>Add</span></router-link>
+      <router-link s-else to='/all' class='link btn btn-right'><span on-click='finishEdit'>Done</span></router-link>
     </header>
 
     <!--filter s-if='path !== 1' s-ref='filter'></filter-->
@@ -87,5 +87,14 @@
 </script>
 
 <style lang='scss'>
-  @import '../main.scss'
+  @import '../main.scss';
+
+  .btn-left {
+    float: left;
+    margin-left: .5em;
+  }
+  .btn-right {
+    float: right;
+    margin-right: .5em;
+  }
 </style>

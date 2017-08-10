@@ -1,10 +1,41 @@
 <template>
-  <div>
+  <div class='onething-container'>
+    <p>Now the Onething is:</p>
+    <p class='onething'>{{ onething.priority }} {{ onething.status }} {{ onething.content }}</p>
   </div>
 </template>
 
 <script>
+  import { connect } from 'san-store';
+
+  export default connect.san({todos:'todos'},{})({
+    initData: function () {
+      return {
+        onething: {}
+      }
+    },
+    computed: {
+      onething: function () {
+        let todos = this.data.get('todos');
+        let todo = {};
+        if (todos) {
+          todos = todos.filter((el, index, array) => {
+            return el.priority === 'high' && el.status === 'inprogress'
+          }).sort((el1, el2) => {
+            return el1.id - el2.id
+          })
+          return todos[0];
+        }
+      }
+    }
+  })
 </script>
 
 <style lang='scss'>
+  .onething-container {
+    margin-top: 3em;
+    .onething {
+      text-align: center;
+    }
+  }
 </style>

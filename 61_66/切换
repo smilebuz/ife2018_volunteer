@@ -1,4 +1,0 @@
-1. state.js 存储路由信息
-2. route.add(handler(){})
-3. 通过s-if 切换component
-4. 路由设置 /edit/new /edit/:id
